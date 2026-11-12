@@ -1,0 +1,2071 @@
+/* =====================================================
+   DESTEK MERKEZI
+   COMPLETE WEBSITE STYLESHEET
+   Customer + Expert + Login
+   ===================================================== */
+
+/* =====================================================
+   1. DESIGN VARIABLES
+   ===================================================== */
+
+:root {
+    --primary: #6c5ce7;
+    --primary-dark: #5141c8;
+    --primary-hover: #5b4bd5;
+    --primary-light: #f0edff;
+
+    --background: #f7f8fd;
+    --surface: #ffffff;
+    --surface-soft: #f9faff;
+
+    --text: #1b2541;
+    --text-secondary: #727c93;
+    --text-muted: #98a1b3;
+
+    --border: #e8eaf3;
+
+    --success: #20b486;
+    --success-light: #e5f8ef;
+
+    --warning: #d99a30;
+    --warning-light: #fff5df;
+
+    --info: #367acf;
+    --info-light: #eaf3ff;
+
+    --shadow: 0 12px 35px rgba(30, 40, 90, 0.06);
+    --shadow-hover: 0 15px 40px rgba(30, 40, 90, 0.10);
+
+    --radius: 18px;
+}
+
+/* =====================================================
+   2. GLOBAL RESET
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    background: var(--background);
+    color: var(--text);
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.hidden,
+[hidden] {
+    display: none !important;
+}
+
+.wrap {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+/* =====================================================
+   3. CUSTOMER NAVIGATION
+   ===================================================== */
+
+.customer .top {
+    height: 76px;
+
+    display: flex;
+    align-items: center;
+
+    background: white;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.customer .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.customer .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    letter-spacing: -0.7px;
+}
+
+.customer .brandmark {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    background: linear-gradient(
+        135deg,
+        #8778ff,
+        #5b4bd5
+    );
+
+    border-radius: 13px;
+
+    color: white;
+    font-size: 25px;
+}
+
+.customer .brandlight {
+    color: var(--primary);
+}
+
+.customer .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.customer .status-indicator {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: var(--success);
+
+    box-shadow: 0 0 0 4px rgba(32, 180, 134, 0.12);
+}
+
+/* =====================================================
+   4. CUSTOMER INTRODUCTION
+   ===================================================== */
+
+.customer .content {
+    padding-top: 48px;
+    padding-bottom: 70px;
+}
+
+.customer .intro {
+    text-align: center;
+    margin-bottom: 42px;
+}
+
+.customer .eyebrow {
+    display: inline-block;
+
+    padding: 7px 15px;
+    margin-bottom: 20px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+
+    border-radius: 30px;
+}
+
+.customer .intro h1 {
+    margin: 0 0 18px;
+
+    font-size: clamp(30px, 4vw, 45px);
+    font-weight: 800;
+
+    line-height: 1.22;
+    letter-spacing: -1.3px;
+}
+
+.customer .intro h1 span {
+    color: var(--primary);
+}
+
+.customer .intro p {
+    max-width: 620px;
+    margin: auto;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* =====================================================
+   5. CUSTOMER PAGE LAYOUT
+   ===================================================== */
+
+.customer .layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.65fr)
+        minmax(280px, 1fr);
+
+    align-items: start;
+
+    gap: 25px;
+}
+
+.customer .left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
+    min-width: 0;
+}
+
+.customer .side {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
+    min-width: 0;
+}
+
+/* =====================================================
+   6. AI CHAT CARD
+   ===================================================== */
+
+.customer .chat-card {
+    min-width: 0;
+
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    overflow: hidden;
+}
+
+.customer .chat-head {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 20px 23px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.customer .avatar {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--primary);
+
+    color: white;
+
+    border-radius: 14px;
+
+    font-size: 23px;
+}
+
+.customer .chat-head strong {
+    display: block;
+
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.customer .chat-head small {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    color: var(--text-secondary);
+}
+
+.customer .chat-head-icon {
+    margin-left: auto;
+
+    color: var(--success);
+
+    font-size: 15px;
+}
+
+/* =====================================================
+   7. AI CHAT MESSAGES
+   ===================================================== */
+
+.customer .messages {
+    height: 390px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 16px;
+
+    padding: 24px;
+
+    background: white;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.customer .bubble-row {
+    display: flex;
+
+    width: 100%;
+
+    flex-shrink: 0;
+}
+
+.customer .bubble-row.bot {
+    justify-content: flex-start;
+}
+
+.customer .bubble-row.human {
+    justify-content: flex-end;
+}
+
+.customer .bubble-row .bubble {
+    width: fit-content;
+
+    max-width: min(85%, 480px);
+
+    min-width: 0;
+
+    margin: 0;
+
+    padding: 14px 18px;
+
+    border-radius: 16px;
+
+    font-size: 13px;
+    line-height: 1.7;
+
+    overflow-wrap: anywhere;
+    word-break: normal;
+
+    white-space: pre-wrap;
+}
+
+/* AI RESPONSES */
+
+.customer .bubble-row.bot .bubble {
+    background: #f2f3f9;
+
+    color: var(--text);
+
+    border-radius: 16px 16px 16px 5px;
+}
+
+/* CUSTOMER MESSAGES */
+
+.customer .bubble-row.human .bubble {
+    background: var(--primary);
+
+    color: white;
+
+    border-radius: 16px 16px 5px 16px;
+}
+
+/* INITIAL GREETING FIX */
+
+.customer .messages > .bubble-row:first-child .bubble {
+    white-space: normal;
+}
+
+/* MESSAGE SOURCE */
+
+.customer .bubble-hint {
+    margin-top: 10px;
+
+    padding-top: 8px;
+
+    border-top: 1px solid rgba(120, 120, 150, 0.2);
+
+    font-size: 10px;
+
+    opacity: 0.7;
+}
+
+/* SCROLLBARS */
+
+.customer .messages::-webkit-scrollbar,
+.customer .expert-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.customer .messages::-webkit-scrollbar-thumb,
+.customer .expert-messages::-webkit-scrollbar-thumb {
+    background: #dcdff0;
+
+    border-radius: 10px;
+}
+
+/* =====================================================
+   8. TYPING INDICATOR
+   ===================================================== */
+
+.customer .typing {
+    padding: 9px 24px;
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+    background: #fafaff;
+}
+
+.customer .typing span {
+    display: inline-block;
+
+    margin-left: 8px;
+
+    letter-spacing: 3px;
+
+    animation: blink 1.3s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+/* =====================================================
+   9. CHAT INPUT
+   ===================================================== */
+
+.customer .composer {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 17px 20px;
+
+    border-top: 1px solid var(--border);
+}
+
+.customer .composer input {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 47px;
+
+    padding: 0 16px;
+
+    background: #f8f9fd;
+
+    border: 1px solid #e4e7f0;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+.customer .composer input:focus {
+    background: white;
+
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
+}
+
+.customer .composer input::placeholder {
+    color: #9da5b7;
+}
+
+.customer .composer button {
+    width: 47px;
+    height: 47px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--primary);
+
+    color: white;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 23px;
+}
+
+.customer .composer button:hover {
+    background: var(--primary-dark);
+}
+
+.customer .chat-foot {
+    padding: 0 20px 17px;
+
+    text-align: center;
+
+    color: #9ba3b5;
+
+    font-size: 10px;
+}
+
+/* =====================================================
+   10. RIGHT SIDEBAR
+   ===================================================== */
+
+.customer .side-card {
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    padding: 24px;
+
+    box-shadow: var(--shadow);
+}
+
+.customer .side-icon {
+    width: 43px;
+    height: 43px;
+
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 17px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    border-radius: 13px;
+
+    font-size: 23px;
+}
+
+.customer .side-icon.blue {
+    color: #3389db;
+
+    background: #edf5ff;
+}
+
+.customer .side-card h2 {
+    margin: 0 0 8px;
+
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.customer .side-card > p {
+    margin: 0 0 19px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* =====================================================
+   11. FREQUENTLY ASKED QUESTIONS
+   ===================================================== */
+
+.customer #faqButtons {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+.customer .faqbtn {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 13px 14px;
+
+    background: #f9faff;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    color: var(--text);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: left;
+
+    transition: 0.2s;
+}
+
+.customer .faqbtn span {
+    flex-shrink: 0;
+
+    color: var(--primary);
+
+    font-size: 17px;
+}
+
+.customer .faqbtn:hover {
+    background: var(--primary-light);
+
+    border-color: #cfc8ff;
+
+    color: var(--primary);
+}
+
+/* =====================================================
+   12. HOW IT WORKS
+   ===================================================== */
+
+.customer .system-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+
+    margin-top: 20px;
+}
+
+.customer .system-info-item {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+.customer .system-info-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--primary-light);
+
+    border-radius: 12px;
+
+    font-size: 19px;
+}
+
+.customer .system-info-item strong {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.customer .system-info-item small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =====================================================
+   13. EXPERT CONVERSATIONS
+   ===================================================== */
+
+.customer .expert-chat-card {
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    overflow: hidden;
+}
+
+.customer .expert-chat-header {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 21px 23px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.customer .expert-chat-avatar {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--primary-light);
+
+    border-radius: 14px;
+
+    font-size: 22px;
+}
+
+.customer .expert-chat-header strong {
+    display: block;
+
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.customer .expert-chat-header small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+}
+
+/* =====================================================
+   14. SUPPORT CONVERSATION LIST
+   ===================================================== */
+
+.customer #expertConversations {
+    max-height: 420px;
+
+    overflow-y: auto;
+
+    padding: 14px;
+}
+
+.customer .support-conversation {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 10px;
+
+    padding: 17px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    text-align: left;
+
+    transition: 0.2s;
+}
+
+.customer .support-conversation:hover {
+    background: #f8f7ff;
+
+    border-color: #cfc8ff;
+
+    transform: translateY(-1px);
+}
+
+.customer .support-conversation:last-child {
+    margin-bottom: 0;
+}
+
+.customer .support-conversation-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--primary-light);
+
+    border-radius: 13px;
+
+    font-size: 21px;
+}
+
+.customer .support-conversation-content {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.customer .support-conversation-content strong {
+    display: block;
+
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+.customer .support-conversation-content small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+}
+
+.customer .support-conversation-right {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+/* STATUS LABELS */
+
+.customer .support-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.customer .support-status.pending {
+    background: var(--warning-light);
+    color: #b47b1a;
+}
+
+.customer .support-status.reviewing {
+    background: var(--info-light);
+    color: var(--info);
+}
+
+.customer .support-status.answered {
+    background: var(--success-light);
+    color: #178a57;
+}
+
+.customer .support-arrow {
+    color: #a7aec0;
+    font-size: 25px;
+}
+
+.customer .expert-empty {
+    padding: 25px 12px;
+
+    text-align: center;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+/* =====================================================
+   15. EXPERT CONVERSATION THREAD
+   ===================================================== */
+
+.customer .expert-thread {
+    padding: 20px;
+
+    border-top: 1px solid var(--border);
+
+    background: #fcfcff;
+}
+
+.customer .expert-thread-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+    flex-wrap: wrap;
+}
+
+.customer .expert-thread-top strong {
+    font-size: 13px;
+}
+
+.customer .expert-messages {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    max-height: 360px;
+
+    overflow-y: auto;
+
+    padding: 10px 0;
+}
+
+.customer .expert-message-row {
+    display: flex;
+}
+
+.customer .expert-message {
+    max-width: 85%;
+
+    padding: 13px 17px;
+
+    border-radius: 15px;
+
+    font-size: 12px;
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* CUSTOMER MESSAGE */
+
+.customer .expert-message-row.customer {
+    justify-content: flex-end;
+}
+
+.customer .expert-message-row.customer .expert-message {
+    background: var(--primary);
+
+    color: white;
+
+    border-bottom-right-radius: 5px;
+}
+
+/* EXPERT MESSAGE */
+
+.customer .expert-message-row.expert {
+    justify-content: flex-start;
+}
+
+.customer .expert-message-row.expert .expert-message {
+    background: #edf0fa;
+
+    color: var(--text);
+
+    border-bottom-left-radius: 5px;
+}
+
+/* WAITING MESSAGE */
+
+.customer .expert-message-row.waiting {
+    justify-content: flex-start;
+}
+
+.customer .expert-message-row.waiting .expert-message {
+    background: #fff8e9;
+
+    color: #a47725;
+
+    border: 1px solid #f8e7ba;
+}
+
+/* REFRESH BUTTON */
+
+.customer .refresh-expert {
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 12px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.customer .refresh-expert:hover {
+    background: #e2dcff;
+}
+
+/* =====================================================
+   16. CUSTOMER FOOTER
+   ===================================================== */
+
+.customer .footer {
+    padding: 25px 20px;
+
+    text-align: center;
+
+    color: var(--text-secondary);
+
+    border-top: 1px solid var(--border);
+
+    background: white;
+
+    font-size: 11px;
+}
+
+/* =====================================================
+   17. CUSTOMER RESPONSIVE DESIGN
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+    .customer .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .customer .side {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+
+    .wrap {
+        width: calc(100% - 24px);
+    }
+
+    .customer .top {
+        height: 65px;
+    }
+
+    .customer .brand {
+        font-size: 18px;
+    }
+
+    .customer .brandmark {
+        width: 36px;
+        height: 36px;
+
+        font-size: 20px;
+    }
+
+    .customer .nav-right {
+        font-size: 10px;
+    }
+
+    .customer .content {
+        padding-top: 28px;
+        padding-bottom: 40px;
+    }
+
+    .customer .intro h1 {
+        font-size: 29px;
+        letter-spacing: -0.8px;
+    }
+
+    .customer .intro p {
+        font-size: 12px;
+    }
+
+    .customer .side {
+        grid-template-columns: 1fr;
+    }
+
+    .customer .chat-head {
+        padding: 16px;
+    }
+
+    .customer .messages {
+        height: 350px;
+        padding: 16px;
+    }
+
+    .customer .bubble-row .bubble {
+        max-width: 92%;
+    }
+
+    .customer .composer {
+        padding: 13px;
+    }
+
+    .customer .composer input {
+        height: 44px;
+    }
+
+    .customer .composer button {
+        width: 44px;
+        height: 44px;
+    }
+
+    .customer .side-card {
+        padding: 20px;
+    }
+
+    .customer .expert-chat-header {
+        padding: 17px;
+    }
+
+    .customer .expert-thread {
+        padding: 15px;
+    }
+
+    .customer .support-conversation {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .customer .support-conversation-right {
+        gap: 5px;
+    }
+
+    .customer .support-status {
+        font-size: 9px;
+        padding: 5px 7px;
+    }
+
+    .customer .support-conversation-icon {
+        width: 38px;
+        height: 38px;
+
+        font-size: 18px;
+    }
+}
+
+/* =====================================================
+   18. EXPERT DASHBOARD
+   ===================================================== */
+
+.admin-page {
+    margin: 0;
+
+    background: #f6f7fc;
+
+    color: #1b2541;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    font-size: 14px;
+}
+
+.admin-page .admin-container {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+/* =====================================================
+   19. ADMIN NAVIGATION
+   ===================================================== */
+
+.admin-page .admin-navbar {
+    height: 84px;
+
+    background: white;
+
+    border-bottom: 1px solid #e8eaf3;
+}
+
+.admin-page .admin-nav-inner {
+    height: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-page .admin-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    text-decoration: none;
+}
+
+.admin-page .admin-logo {
+    width: 46px;
+    height: 46px;
+
+    display: grid;
+    place-items: center;
+
+    background: #6c5ce7;
+
+    border-radius: 14px;
+
+    color: white;
+
+    font-size: 25px;
+}
+
+.admin-page .admin-brand strong {
+    display: block;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    color: #1b2541;
+}
+
+.admin-page .admin-brand strong span {
+    color: #6c5ce7;
+}
+
+.admin-page .admin-brand small {
+    display: block;
+
+    font-size: 11px;
+
+    color: #8790a5;
+}
+
+.admin-page .admin-nav-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+.admin-page .admin-home-link {
+    color: #69738b;
+
+    font-size: 12px;
+}
+
+.admin-page .admin-logout {
+    padding: 10px 16px;
+
+    background: #f0edff;
+
+    border: none;
+    border-radius: 10px;
+
+    color: #6251d9;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =====================================================
+   20. ADMIN MAIN
+   ===================================================== */
+
+.admin-page .admin-main {
+    padding-top: 45px;
+    padding-bottom: 70px;
+}
+
+.admin-page .admin-welcome {
+    margin-bottom: 30px;
+}
+
+.admin-page .admin-badge {
+    display: inline-block;
+
+    padding: 7px 13px;
+
+    margin-bottom: 15px;
+
+    border-radius: 25px;
+
+    background: #efecff;
+
+    color: #6956df;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.admin-page .admin-welcome h1 {
+    margin: 0 0 10px;
+
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.admin-page .admin-welcome p {
+    margin: 0;
+
+    color: #828ca1;
+
+    font-size: 13px;
+}
+
+/* =====================================================
+   21. ADMIN STATISTICS
+   ===================================================== */
+
+.admin-page .admin-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 38px;
+}
+
+.admin-page .admin-stat-card {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 24px;
+
+    background: white;
+
+    border: 1px solid #e8eaf3;
+    border-radius: 17px;
+
+    box-shadow: 0 10px 30px rgba(30, 40, 90, 0.04);
+}
+
+.admin-page .admin-stat-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 13px;
+
+    font-size: 23px;
+}
+
+.admin-page .admin-stat-icon.orange {
+    background: #fff4e1;
+    color: #d48b22;
+}
+
+.admin-page .admin-stat-icon.blue {
+    background: #e9f2ff;
+    color: #3884df;
+}
+
+.admin-page .admin-stat-icon.green {
+    background: #e4f8ed;
+    color: #16a26b;
+}
+
+.admin-page .admin-stat-icon.purple {
+    background: #f0edff;
+    color: #6c5ce7;
+}
+
+.admin-page .admin-stat-card span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #8790a5;
+
+    font-size: 11px;
+}
+
+.admin-page .admin-stat-card strong {
+    display: block;
+
+    font-size: 27px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+/* =====================================================
+   22. ADMIN SECTIONS
+   ===================================================== */
+
+.admin-page .admin-section {
+    margin-bottom: 38px;
+}
+
+.admin-page .admin-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.admin-page .admin-section-header h2 {
+    margin: 0 0 6px;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.admin-page .admin-section-header p {
+    margin: 0;
+
+    color: #8a93a7;
+
+    font-size: 12px;
+}
+
+.admin-page .admin-section-count {
+    padding: 7px 12px;
+
+    background: white;
+
+    border: 1px solid #e8eaf3;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+
+    color: #7d879c;
+}
+
+/* =====================================================
+   23. ADMIN TICKET CARDS
+   ===================================================== */
+
+.admin-page .admin-ticket-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+.admin-page .admin-ticket {
+    min-width: 0;
+
+    background: white;
+
+    border: 1px solid #e8eaf3;
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow: 0 12px 35px rgba(30, 40, 90, 0.04);
+}
+
+.admin-page .admin-ticket-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 20px;
+
+    border-bottom: 1px solid #e8eaf3;
+}
+
+.admin-page .admin-ticket-title {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+.admin-page .admin-ticket-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background: #f0edff;
+
+    font-size: 19px;
+}
+
+.admin-page .admin-ticket-title strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.admin-page .admin-ticket-title small {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 10px;
+
+    color: #929bae;
+}
+
+.admin-page .admin-ticket-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    white-space: nowrap;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.admin-page .admin-ticket-status.waiting {
+    background: #fff4df;
+    color: #bf811d;
+}
+
+.admin-page .admin-ticket-status.reviewing {
+    background: #e8f2ff;
+    color: #347ddd;
+}
+
+.admin-page .admin-ticket-status.solved {
+    background: #e3f8ed;
+    color: #169763;
+}
+
+/* =====================================================
+   24. ADMIN QUESTION
+   ===================================================== */
+
+.admin-page .admin-question {
+    margin: 20px;
+
+    padding: 18px;
+
+    background: #f7f8fd;
+
+    border-radius: 12px;
+
+    border: 1px solid #ecedf5;
+
+    color: #26314c;
+
+    font-size: 13px;
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   25. ADMIN ANSWER FORM
+   ===================================================== */
+
+.admin-page .admin-answer-form {
+    padding: 0 20px 20px;
+}
+
+.admin-page .admin-form-label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #36405a;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.admin-page .admin-answer-form textarea {
+    display: block;
+
+    width: 100%;
+    min-height: 115px;
+
+    resize: vertical;
+
+    padding: 14px;
+
+    border: 1px solid #e0e4f0;
+    border-radius: 11px;
+
+    background: white;
+
+    color: #26314c;
+
+    font-size: 12px;
+    line-height: 1.7;
+
+    outline: none;
+}
+
+.admin-page .admin-answer-form textarea:focus {
+    border-color: #6c5ce7;
+
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
+}
+
+.admin-page .admin-form-bottom {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 18px;
+}
+
+.admin-page .admin-status-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-page .admin-status-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #8790a5;
+
+    font-size: 11px;
+}
+
+.admin-page .admin-status-field select {
+    width: 100%;
+
+    padding: 11px;
+
+    border: 1px solid #e0e4f0;
+    border-radius: 10px;
+
+    background: #f9faff;
+
+    color: #26314c;
+
+    font-size: 12px;
+}
+
+.admin-page .admin-save-button {
+    padding: 12px 19px;
+
+    background: #6c5ce7;
+
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.admin-page .admin-save-button:hover {
+    background: #5141c8;
+}
+
+/* =====================================================
+   26. ADMIN QUESTION HISTORY
+   ===================================================== */
+
+.admin-page .admin-history-list {
+    background: white;
+
+    border: 1px solid #e8eaf3;
+    border-radius: 18px;
+
+    overflow: hidden;
+}
+
+.admin-page .admin-history-item {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 17px 21px;
+
+    border-bottom: 1px solid #eef0f6;
+}
+
+.admin-page .admin-history-item:last-child {
+    border-bottom: none;
+}
+
+.admin-page .admin-history-icon {
+    width: 39px;
+    height: 39px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: #f0edff;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+}
+
+.admin-page .admin-history-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-page .admin-history-content strong {
+    display: block;
+
+    font-size: 12px;
+
+    overflow-wrap: anywhere;
+}
+
+.admin-page .admin-history-content small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #9099ab;
+
+    font-size: 10px;
+}
+
+.admin-page .admin-history-badge {
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.admin-page .admin-history-badge.ai {
+    background: #f0edff;
+    color: #6956df;
+}
+
+.admin-page .admin-history-badge.human {
+    background: #e6f6ed;
+    color: #168d5d;
+}
+
+/* =====================================================
+   27. ADMIN EMPTY STATES
+   ===================================================== */
+
+.admin-page .admin-empty {
+    grid-column: 1 / -1;
+
+    padding: 45px 20px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid #e8eaf3;
+    border-radius: 17px;
+
+    color: #8993a7;
+}
+
+.admin-page .admin-empty h3 {
+    color: #25304c;
+    margin-bottom: 7px;
+}
+
+.admin-page .admin-empty p {
+    margin: 0;
+    font-size: 12px;
+}
+
+/* =====================================================
+   28. ADMIN FOOTER
+   ===================================================== */
+
+.admin-page .admin-footer {
+    padding: 25px 20px;
+
+    text-align: center;
+
+    border-top: 1px solid #e8eaf3;
+
+    color: #9199ab;
+
+    font-size: 11px;
+}
+
+/* =====================================================
+   29. ADMIN RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+    .admin-page .admin-stats {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-page .admin-ticket-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .admin-page .admin-container {
+        width: calc(100% - 24px);
+    }
+
+    .admin-page .admin-navbar {
+        height: 72px;
+    }
+
+    .admin-page .admin-brand strong {
+        font-size: 16px;
+    }
+
+    .admin-page .admin-home-link {
+        display: none;
+    }
+
+    .admin-page .admin-main {
+        padding-top: 25px;
+    }
+
+    .admin-page .admin-welcome h1 {
+        font-size: 25px;
+    }
+
+    .admin-page .admin-stats {
+        gap: 10px;
+    }
+
+    .admin-page .admin-stat-card {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .admin-page .admin-stat-icon {
+        width: 38px;
+        height: 38px;
+
+        font-size: 18px;
+    }
+
+    .admin-page .admin-stat-card strong {
+        font-size: 23px;
+    }
+
+    .admin-page .admin-ticket-header {
+        padding: 15px;
+    }
+
+    .admin-page .admin-question {
+        margin: 15px;
+    }
+
+    .admin-page .admin-answer-form {
+        padding: 0 15px 15px;
+    }
+
+    .admin-page .admin-form-bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-page .admin-save-button {
+        width: 100%;
+    }
+}
+
+/* =====================================================
+   30. LOGIN PAGE
+   ===================================================== */
+
+/*
+   These styles are isolated so that they do not
+   change the customer or expert dashboard.
+*/
+
+.login-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(108, 92, 231, 0.12),
+            transparent 40%
+        ),
+        #f7f8fd;
+}
+
+.login-page .login-card {
+    width: min(100%, 420px);
+
+    padding: 35px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    box-shadow: 0 20px 55px rgba(30, 40, 90, 0.08);
+}
+
+.login-page .login-title {
+    margin: 0 0 10px;
+
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.login-page .login-description {
+    margin-bottom: 25px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+.login-page .login-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.login-page .login-form label {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.login-page .login-form input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: var(--surface-soft);
+
+    outline: none;
+}
+
+.login-page .login-form input:focus {
+    border-color: var(--primary);
+}
+
+.login-page .login-button {
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 13px;
+
+    background: var(--primary);
+
+    color: white;
+
+    border: none;
+    border-radius: 11px;
+
+    font-weight: 800;
+}
+
+.login-page .login-button:hover {
+    background: var(--primary-dark);
+}
+/* INITIAL CHAT WELCOME MESSAGE */
+
+.customer .messages > .bubble-row:first-child .bubble {
+    width: min(100%, 480px);
+    max-width: 85%;
+    white-space: normal;
+}
+
+.customer .messages > .bubble-row:first-child .bubble p {
+    margin: 0 0 12px;
+    line-height: 1.65;
+}
+
+.customer .messages > .bubble-row:first-child .bubble p:last-child {
+    margin-bottom: 0;
+}
+
+/* EMPTY FAQ MESSAGE */
+
+.customer .empty-faq {
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 15px;
+}

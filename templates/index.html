@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Destek Merkezi | Akıllı Müşteri Hizmetleri</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+    <!-- YENİ MÜŞTERİ MESAJLAŞMA TASARIMI -->
+
+    <style>
+
+        /* =====================================
+           MÜŞTERİ MESAJ GÖNDERME ALANI
+           ===================================== */
+
+        .customer-reply-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            padding: 18px 0 0;
+
+            margin-top: 18px;
+
+            border-top: 1px solid #e8eaf3;
+        }
+
+        .customer-reply-form textarea {
+            width: 100%;
+            min-height: 90px;
+
+            padding: 14px 16px;
+
+            background: #f9faff;
+
+            border: 1px solid #e1e5ef;
+            border-radius: 12px;
+
+            color: #26314c;
+
+            font-family: inherit;
+            font-size: 13px;
+            line-height: 1.6;
+
+            resize: vertical;
+            outline: none;
+
+            transition: border-color 0.2s;
+        }
+
+        .customer-reply-form textarea:focus {
+            border-color: #6c5ce7;
+            background: white;
+
+            box-shadow:
+                0 0 0 3px rgba(108, 92, 231, 0.08);
+        }
+
+        .customer-reply-form textarea::placeholder {
+            color: #a0a7b7;
+        }
+
+        .customer-reply-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .customer-reply-info {
+            color: #98a1b3;
+            font-size: 11px;
+        }
+
+        .customer-reply-form button {
+            padding: 11px 19px;
+
+            background: #6c5ce7;
+
+            color: white;
+
+            border: none;
+            border-radius: 10px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: background 0.2s;
+        }
+
+        .customer-reply-form button:hover {
+            background: #5141c8;
+        }
+
+        .customer-reply-form button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* =====================================
+           UZMAN GÖRÜŞME PANELİ
+           ===================================== */
+
+        .customer .expert-thread {
+            background: #fcfcff;
+        }
+
+        .customer .expert-messages {
+            min-height: 100px;
+            max-height: 420px;
+
+            overflow-y: auto;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 14px;
+
+            padding: 15px 0;
+        }
+
+        .customer .expert-message-row {
+            display: flex;
+            width: 100%;
+        }
+
+        .customer .expert-message-row.customer {
+            justify-content: flex-end;
+        }
+
+        .customer .expert-message-row.expert {
+            justify-content: flex-start;
+        }
+
+        .customer .expert-message-row.waiting {
+            justify-content: flex-start;
+        }
+
+        .customer .expert-message {
+            max-width: 85%;
+
+            padding: 13px 17px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .customer .expert-message-row.customer
+        .expert-message {
+            background: #6c5ce7;
+            color: white;
+
+            border-bottom-right-radius: 5px;
+        }
+
+        .customer .expert-message-row.expert
+        .expert-message {
+            background: #edf0fa;
+            color: #26314c;
+
+            border-bottom-left-radius: 5px;
+        }
+
+        .customer .expert-message-row.waiting
+        .expert-message {
+            background: #fff8e9;
+            color: #a47725;
+        }
+
+        .customer .expert-message strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .customer .expert-message small {
+            display: block;
+            margin-top: 7px;
+            opacity: 0.7;
+        }
+
+        /* =====================================
+           GÖRÜŞME DURUMU
+           ===================================== */
+
+        .customer .support-status.pending {
+            background: #fff5df;
+            color: #b47b1a;
+        }
+
+        .customer .support-status.reviewing {
+            background: #eaf3ff;
+            color: #367acf;
+        }
+
+        .customer .support-status.answered {
+            background: #e5f8ef;
+            color: #178a57;
+        }
+
+        /* =====================================
+           MOBİL UYUMLULUK
+           ===================================== */
+
+        @media (max-width: 650px) {
+
+            .customer-reply-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .customer-reply-form button {
+                width: 100%;
+            }
+
+            .customer .expert-message {
+                max-width: 92%;
+            }
+
+            .customer .expert-messages {
+                max-height: 350px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="customer">
+
+
+    <!-- =====================================
+         ÜST MENÜ
+         ===================================== -->
+
+    <header class="top">
+
+        <div class="wrap nav">
+
+            <a href="/" class="brand">
+
+                <span class="brandmark">
+                    ✦
+                </span>
+
+                <span>
+                    Destek<span class="brandlight">Merkezi</span>
+                </span>
+
+            </a>
+
+
+            <div class="nav-right">
+
+                <span class="status-indicator"></span>
+
+                <span>
+                    Destek sistemi aktif
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================
+         ANA SAYFA
+         ===================================== -->
+
+    <main class="wrap content">
+
+
+        <!-- KARŞILAMA -->
+
+        <section class="intro">
+
+            <div class="eyebrow">
+                SİZE NASIL YARDIMCI OLABİLİRİZ?
+            </div>
+
+
+            <h1>
+
+                Bir sorunuz mu var?
+
+                <br>
+
+                <span>
+                    Çözümü birlikte bulalım.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Sorunuzu yazın. Akıllı destek asistanımız
+                size yardımcı olsun.
+
+                <br>
+
+                Gerekli durumlarda uzman ekibimiz
+                devreye girsin.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =====================================
+             İKİ SÜTUNLU YERLEŞİM
+             ===================================== -->
+
+        <div class="layout">
+
+
+            <!-- =================================
+                 SOL TARAF
+                 ================================= -->
+
+            <div class="left-column">
+
+
+                <!-- =============================
+                     YAPAY ZEKA SOHBETİ
+                     ============================= -->
+
+                <section class="chat-card">
+
+
+                    <!-- SOHBET BAŞLIĞI -->
+
+                    <div class="chat-head">
+
+                        <div class="avatar">
+                            ✦
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Akıllı Destek Asistanı
+                            </strong>
+
+                            <small>
+                                Yapay zekâ destekli müşteri hizmetleri
+                            </small>
+
+                        </div>
+
+
+                        <div class="chat-head-icon">
+                            ●
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SOHBET MESAJLARI -->
+
+                    <div
+                        class="messages"
+                        id="messages"
+                        aria-live="polite"
+                    >
+
+
+                        <!-- İLK MESAJ -->
+
+                        <div class="bubble-row bot">
+
+                            <div class="bubble">
+
+                                <p>Merhaba! 👋</p>
+
+                                <p>
+                                    Ben akıllı destek asistanınızım.
+                                </p>
+
+                                <p>
+                                    Alışveriş, sipariş takibi,
+                                    sipariş iptali, hasarlı ürünler
+                                    ve teknik destek konularında
+                                    size yardımcı olabilirim.
+                                </p>
+
+                                <p>
+                                    Cevaplayamadığım soruları
+                                    uzman ekibimize ileteceğim.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- YAZIYOR GÖSTERGESİ -->
+
+                    <div
+                        class="typing hidden"
+                        id="typing"
+                    >
+
+                        Yanıt hazırlanıyor
+
+                        <span>● ● ●</span>
+
+                    </div>
+
+
+
+                    <!-- MESAJ GÖNDERME -->
+
+                    <form
+                        class="composer"
+                        id="askForm"
+                    >
+
+                        <input
+
+                            type="text"
+
+                            id="question"
+
+                            name="message"
+
+                            placeholder="Sorunuzu buraya yazın..."
+
+                            autocomplete="off"
+
+                            minlength="2"
+
+                            maxlength="2500"
+
+                            required
+
+                        >
+
+
+                        <button
+
+                            type="submit"
+
+                            id="send"
+
+                            title="Mesaj gönder"
+
+                            aria-label="Mesaj gönder"
+
+                        >
+
+                            ➜
+
+                        </button>
+
+                    </form>
+
+
+
+                    <!-- SOHBET ALT BİLGİ -->
+
+                    <div class="chat-foot">
+
+                        🔒 Sorularınız destek amacıyla kaydedilir.
+                        Hassas bilgilerinizi paylaşmayın.
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- =============================
+                     DESTEK MESAJLARIM
+                     ============================= -->
+
+                <section class="expert-chat-card">
+
+
+                    <!-- BAŞLIK -->
+
+                    <div class="expert-chat-header">
+
+
+                        <div class="expert-chat-avatar">
+                            💬
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Destek Mesajlarım
+                            </strong>
+
+
+                            <small>
+                                Uzman ekibimizle yaptığınız görüşmeler
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         GÖRÜŞME LİSTESİ
+                         ========================= -->
+
+                    <div id="expertConversations">
+
+
+                        <div class="expert-empty">
+
+                            Henüz bir destek görüşmeniz bulunmuyor.
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         SEÇİLEN GÖRÜŞME
+                         ========================= -->
+
+                    <div
+
+                        id="expertThread"
+
+                        class="expert-thread hidden"
+
+                    >
+
+
+                        <!-- GÖRÜŞME BAŞLIĞI -->
+
+                        <div class="expert-thread-top">
+
+
+                            <strong id="expertTicketNumber">
+                                Destek görüşmesi
+                            </strong>
+
+
+                            <span
+
+                                id="expertTicketStatus"
+
+                                class="support-status pending"
+
+                            >
+
+                                Yanıt bekleniyor
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- =====================
+                             UZMAN MESAJLARI
+                             ===================== -->
+
+                        <div
+
+                            id="expertMessages"
+
+                            class="expert-messages"
+
+                            aria-live="polite"
+
+                        ></div>
+
+
+
+                        <!-- =====================
+                             YENİ MESAJ GÖNDERME
+                             ===================== -->
+
+                        <form
+                            id="customerReplyForm"
+                            class="customer-reply-form"
+                        >
+
+                            <textarea
+
+                                id="customerReplyText"
+
+                                name="message"
+
+                                placeholder="Uzman ekibine mesajınızı yazın..."
+
+                                maxlength="5000"
+
+                                rows="3"
+
+                                required
+
+                            ></textarea>
+
+
+                            <div class="customer-reply-actions">
+
+
+                                <span class="customer-reply-info">
+
+                                    Mesajınız doğrudan uzman ekibine iletilir.
+
+                                </span>
+
+
+                                <button
+
+                                    id="customerReplySend"
+
+                                    type="submit"
+
+                                >
+
+                                    Mesaj Gönder →
+
+                                </button>
+
+
+                            </div>
+
+
+                        </form>
+
+
+
+                        <!-- =====================
+                             YANIT KONTROL BUTONU
+                             ===================== -->
+
+                        <button
+
+                            id="refreshExpert"
+
+                            class="refresh-expert"
+
+                            type="button"
+
+                        >
+
+                            ↻ Mesajları Yenile
+
+                        </button>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 SAĞ TARAF
+                 ================================= -->
+
+            <aside class="side">
+
+
+                <!-- =============================
+                     SIK SORULAN SORULAR
+                     ============================= -->
+
+                <section class="side-card">
+
+
+                    <div class="side-icon">
+                        ✳
+                    </div>
+
+
+                    <h2>
+                        Sıkça Sorulan Sorular
+                    </h2>
+
+
+                    <p>
+
+                        Aşağıdaki sorulardan birini seçerek
+                        hızlıca yanıt alabilirsiniz.
+
+                    </p>
+
+
+
+                    <!-- SSS BUTONLARI -->
+
+                    <div id="faqButtons">
+
+
+                        {% for f in faq %}
+
+
+                        <button
+
+                            class="faqbtn"
+
+                            type="button"
+
+                            data-question="{{ f.soru }}"
+
+                        >
+
+                            {{ f.soru }}
+
+                            <span>↗</span>
+
+                        </button>
+
+
+                        {% else %}
+
+
+                        <div class="empty-faq">
+
+                            Henüz sıkça sorulan soru bulunmuyor.
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- =============================
+                     BİLGİLENDİRME
+                     ============================= -->
+
+                <section class="side-card">
+
+
+                    <div class="side-icon blue">
+                        ◷
+                    </div>
+
+
+                    <h2>
+                        Nasıl Çalışır?
+                    </h2>
+
+
+                    <p>
+
+                        Destek sistemimiz sorularınızı
+                        otomatik olarak değerlendirir.
+
+                    </p>
+
+
+
+                    <div class="system-info">
+
+
+                        <!-- YAPAY ZEKA -->
+
+                        <div class="system-info-item">
+
+                            <span class="system-info-icon">
+                                🤖
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    Yapay Zekâ
+                                </strong>
+
+
+                                <small>
+                                    Bilinen sorular anında yanıtlanır.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- UZMAN DESTEĞİ -->
+
+                        <div class="system-info-item">
+
+                            <span class="system-info-icon">
+                                👨‍💻
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    Uzman Desteği
+                                </strong>
+
+
+                                <small>
+
+                                    Yanıt bulunamayan sorular
+                                    uzman ekibimize iletilir.
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- DESTEK MESAJLARI -->
+
+                        <div class="system-info-item">
+
+                            <span class="system-info-icon">
+                                💬
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    Destek Mesajlarım
+                                </strong>
+
+
+                                <small>
+
+                                    Uzman yanıtlarını buradan
+                                    takip edebilirsiniz.
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================
+         ALT BİLGİ
+         ===================================== -->
+
+    <footer class="footer">
+
+        © Destek Merkezi ·
+        Akıllı yanıtlar, insan desteğiyle tamamlanır.
+
+    </footer>
+
+
+
+    <!-- =====================================
+         JAVASCRIPT
+         ===================================== -->
+
+    <script
+        src="/static/main.js?v=4"
+        defer
+    ></script>
+
+
+</body>
+
+</html>

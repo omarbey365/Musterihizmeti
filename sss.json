@@ -1,0 +1,26 @@
+[
+  {
+    "soru": "Nasıl alışveriş yapabilirim?",
+    "cevap": "Alışveriş yapmak için, ilgilendiğiniz ürünü seçip \"Alışveriş Sepetine Ekle\" butonuna tıklayın. Ardından Alışveriş Sepetine gidin ve satın alma işlemini tamamlamak için yönergeleri takip edin."
+  },
+  {
+    "soru": "Siparişimin durumunu nasıl öğrenebilirim?",
+    "cevap": "Siparişinizin durumunu öğrenmek için internet sitemizdeki hesabınıza giriş yapın ve \"Siparişlerim\" bölümüne gidin. Orada, siparişinizin mevcut durumunu görebilirsiniz."
+  },
+  {
+    "soru": "Bir siparişi nasıl iptal edebilirim?",
+    "cevap": "Siparişinizi iptal etmek istiyorsanız, lütfen en kısa sürede müşteri hizmetlerimizle iletişime geçin. Siparişiniz gönderilmeden önce iptal işleminizde size yardımcı olmaya çalışacağız."
+  },
+  {
+    "soru": "Siparişim hasarlı gelirse ne yapmalıyım?",
+    "cevap": "Hasarlı bir ürün aldıysanız, lütfen hemen müşteri hizmetlerimizle iletişime geçin ve hasarın fotoğraflarını sağlayın. Ürünü değiştirmeniz veya iade etmeniz konusunda size yardımcı olacağız."
+  },
+  {
+    "soru": "Teknik destekle nasıl iletişime geçebilirim?",
+    "cevap": "Teknik destekle, internet sitemizde yer alan telefon numarasını arayarak iletişime geçebilirsiniz. Alternatif olarak, sohbet robotumuz üzerinden de bizimle iletişim kurabilirsiniz."
+  },
+  {
+    "soru": "Ödeme sırasında teslimat yöntemini değiştirebilir miyim?",
+    "cevap": "Evet, ödeme sayfasında teslimat bilgilerini değiştirebilirsiniz. Kullanılabilir teslimat yöntemleri ve şartları orada listelenecektir."
+  }
+]

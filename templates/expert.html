@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Uzman Paneli | Destek Merkezi</title>
+
+    <link rel="stylesheet" href="/static/expert.css?v=5">
+
+    <style>
+
+        /* ======================================
+           MEVCUT UZMAN PANELİ DÜZENLEMELERİ
+           ====================================== */
+
+        .dashboard-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-refresh {
+            padding: 11px 16px;
+            background: #f0edff;
+            color: #6150da;
+            border: 1px solid #dcd8ff;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .dashboard-refresh:hover {
+            background: #e6e1ff;
+        }
+
+        .tickets-grid {
+            max-height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            align-content: start;
+            padding: 5px 12px 12px 5px;
+            scrollbar-width: thin;
+            scrollbar-color: #b9b0f5 #f1efff;
+        }
+
+        .tickets-grid::-webkit-scrollbar {
+            width: 9px;
+        }
+
+        .tickets-grid::-webkit-scrollbar-thumb {
+            background: #b9b0f5;
+            border-radius: 10px;
+        }
+
+        .tickets-grid .ticket-card {
+            min-width: 0;
+            padding-bottom: 15px;
+        }
+
+        .tickets-grid .ticket-header {
+            padding: 13px 15px;
+        }
+
+        .tickets-grid .question-box {
+            margin: 12px 15px;
+            padding: 12px;
+        }
+
+        .ticket-open {
+            display: block;
+            margin: 12px 15px 0;
+            padding: 10px;
+            background: #6c5ce7;
+            color: white;
+            text-align: center;
+            border-radius: 11px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .ticket-open:hover {
+            background: #5141c8;
+        }
+
+        .question-box p {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+        }
+
+        .section-heading {
+            flex-wrap: wrap;
+        }
+
+        .ticket-count {
+            padding: 7px 12px;
+            border: 1px solid #e8eaf3;
+            background: white;
+            border-radius: 9px;
+            color: #798399;
+            font-size: 11px;
+        }
+
+        /* GEÇMİŞ SORULAR */
+
+        .history-section .history-list {
+            max-height: 320px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #b9b0f5 #f1efff;
+        }
+
+        .history-section .history-item {
+            padding: 10px 15px;
+            gap: 11px;
+            min-height: 56px;
+        }
+
+        .history-section .history-icon {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+        }
+
+        .history-section .history-text strong {
+            font-size: 11px;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .history-section .history-text small {
+            font-size: 9px;
+        }
+
+        .history-section .history-tag {
+            font-size: 9px;
+            padding: 5px 9px;
+        }
+
+        /* ======================================
+           YENİ: KULLANIM KILAVUZU BUTONU
+           ====================================== */
+
+        .guide-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 11px 16px;
+
+            background: #6c5ce7;
+            color: white;
+
+            border: none;
+            border-radius: 11px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+            white-space: nowrap;
+
+            transition: background .2s;
+        }
+
+        .guide-button:hover {
+            background: #5141c8;
+        }
+
+        .guide-button:focus-visible {
+            outline: 3px solid #b9b0f5;
+            outline-offset: 3px;
+        }
+
+        /* ======================================
+           KULLANIM KILAVUZU PENCERESİ
+           ====================================== */
+
+        body.guide-open {
+            overflow: hidden;
+        }
+
+        .guide-overlay {
+            position: fixed;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 22px;
+
+            background: rgba(22, 28, 49, 0.65);
+
+            backdrop-filter: blur(5px);
+
+            z-index: 9999;
+        }
+
+        .guide-overlay.hidden {
+            display: none !important;
+        }
+
+        .guide-modal {
+            width: min(100%, 900px);
+            max-height: 90vh;
+
+            display: flex;
+            flex-direction: column;
+
+            background: #ffffff;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 30px 90px rgba(0, 0, 0, 0.25);
+        }
+
+        /* KILAVUZ BAŞLIĞI */
+
+        .guide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+
+            padding: 25px 28px;
+
+            background: linear-gradient(
+                135deg,
+                #f0edff,
+                #ffffff
+            );
+
+            border-bottom: 1px solid #e8eaf3;
+        }
+
+        .guide-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .guide-icon {
+            width: 52px;
+            height: 52px;
+
+            flex-shrink: 0;
+
+            display: grid;
+            place-items: center;
+
+            background: #6c5ce7;
+            color: white;
+
+            border-radius: 15px;
+
+            font-size: 25px;
+        }
+
+        .guide-header h2 {
+            margin: 0 0 5px;
+            font-size: 22px;
+            color: #25304b;
+        }
+
+        .guide-header p {
+            margin: 0;
+            font-size: 12px;
+            color: #828da1;
+        }
+
+        .guide-close {
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+
+            background: white;
+
+            border: 1px solid #e4e6f0;
+            border-radius: 11px;
+
+            color: #798399;
+
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .guide-close:hover {
+            background: #f3f1ff;
+            color: #6c5ce7;
+        }
+
+        /* KILAVUZ İÇERİĞİ */
+
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 225px minmax(0, 1fr);
+
+            min-height: 0;
+            flex: 1;
+        }
+
+        /* SOL MENÜ */
+
+        .guide-sidebar {
+            padding: 19px 12px;
+
+            background: #fafaff;
+
+            border-right: 1px solid #e8eaf3;
+
+            overflow-y: auto;
+        }
+
+        .guide-sidebar-title {
+            display: block;
+
+            padding: 7px 12px;
+            margin-bottom: 9px;
+
+            color: #9aa2b4;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: .7px;
+        }
+
+        .guide-nav-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            width: 100%;
+
+            padding: 12px;
+
+            background: transparent;
+
+            border: none;
+            border-radius: 10px;
+
+            color: #69738a;
+
+            text-align: left;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .guide-nav-button:hover {
+            background: #f0edff;
+            color: #6c5ce7;
+        }
+
+        .guide-nav-button.active {
+            background: #ebe7ff;
+            color: #5141c8;
+            font-weight: 800;
+        }
+
+        .guide-nav-button:focus-visible {
+            outline: 2px solid #6c5ce7;
+            outline-offset: 2px;
+        }
+
+        /* SAĞ İÇERİK */
+
+        .guide-content {
+            min-height: 0;
+
+            overflow-y: auto;
+
+            padding: 28px 32px 35px;
+
+            color: #35405a;
+        }
+
+        .guide-page {
+            display: none;
+        }
+
+        .guide-page.active {
+            display: block;
+        }
+
+        .guide-page h3 {
+            margin: 0 0 12px;
+            font-size: 21px;
+            color: #25304b;
+        }
+
+        .guide-page h4 {
+            margin: 24px 0 10px;
+            font-size: 14px;
+            color: #5141c8;
+        }
+
+        .guide-page p {
+            margin: 0 0 15px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #69738a;
+        }
+
+        .guide-page ol,
+        .guide-page ul {
+            margin: 12px 0 20px;
+            padding-left: 23px;
+        }
+
+        .guide-page li {
+            margin-bottom: 12px;
+            padding-left: 5px;
+
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .guide-page li::marker {
+            color: #6c5ce7;
+            font-weight: 800;
+        }
+
+        /* BİLGİ KUTULARI */
+
+        .guide-info {
+            padding: 16px 18px;
+
+            margin: 17px 0;
+
+            background: #f3f0ff;
+
+            border: 1px solid #e5dfff;
+            border-radius: 12px;
+
+            font-size: 12px;
+            line-height: 1.8;
+
+            color: #6257a5;
+        }
+
+        .guide-warning {
+            padding: 16px 18px;
+
+            margin: 17px 0;
+
+            background: #fff9ea;
+
+            border: 1px solid #f2dfb8;
+            border-radius: 12px;
+
+            font-size: 12px;
+            line-height: 1.8;
+
+            color: #997026;
+        }
+
+        .guide-success {
+            padding: 16px 18px;
+
+            margin: 17px 0;
+
+            background: #eaf8f0;
+
+            border: 1px solid #cae9d9;
+            border-radius: 12px;
+
+            font-size: 12px;
+            line-height: 1.8;
+
+            color: #17774e;
+        }
+
+        /* ÖRNEK İŞ AKIŞI */
+
+        .guide-example {
+            padding: 18px;
+
+            background: #fafbff;
+
+            border: 1px solid #e8eaf3;
+            border-radius: 13px;
+
+            margin: 17px 0;
+        }
+
+        .guide-example strong {
+            display: block;
+            margin-bottom: 10px;
+
+            color: #25304b;
+            font-size: 13px;
+        }
+
+        .guide-example p {
+            margin-bottom: 10px;
+        }
+
+        .guide-example p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* SIK SORULAN SORULAR */
+
+        .guide-faq {
+            border: 1px solid #e8eaf3;
+            border-radius: 12px;
+
+            margin-bottom: 11px;
+
+            overflow: hidden;
+        }
+
+        .guide-faq summary {
+            padding: 15px 17px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            color: #35405a;
+        }
+
+        .guide-faq[open] summary {
+            color: #6c5ce7;
+            background: #f7f5ff;
+        }
+
+        .guide-faq p {
+            padding: 14px 17px;
+            margin: 0;
+        }
+
+        /* ALT BAR */
+
+        .guide-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            padding: 17px 27px;
+
+            border-top: 1px solid #e8eaf3;
+
+            background: white;
+        }
+
+        .guide-footer-text {
+            color: #969fb1;
+            font-size: 11px;
+        }
+
+        .guide-footer-close {
+            padding: 11px 20px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #6c5ce7;
+            color: white;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .guide-footer-close:hover {
+            background: #5141c8;
+        }
+
+        /* ======================================
+           MOBİL UYUMLULUK
+           ====================================== */
+
+        @media (max-width: 750px) {
+
+            .guide-overlay {
+                padding: 10px;
+            }
+
+            .guide-modal {
+                max-height: 96vh;
+            }
+
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-sidebar {
+                display: flex;
+                gap: 7px;
+
+                padding: 12px;
+
+                overflow-x: auto;
+                overflow-y: hidden;
+
+                border-right: none;
+                border-bottom: 1px solid #e8eaf3;
+            }
+
+            .guide-sidebar-title {
+                display: none;
+            }
+
+            .guide-nav-button {
+                width: auto;
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+
+            .guide-content {
+                padding: 22px;
+            }
+
+            .guide-header {
+                padding: 19px;
+            }
+
+            .guide-header h2 {
+                font-size: 18px;
+            }
+
+            .guide-footer {
+                padding: 13px 18px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .tickets-grid {
+                max-height: 450px;
+                padding-right: 8px;
+            }
+
+            .dashboard-toolbar {
+                width: 100%;
+            }
+
+            .dashboard-refresh {
+                flex: 1;
+            }
+
+            .nav-actions {
+                gap: 8px;
+            }
+
+            .guide-button {
+                padding: 10px;
+                font-size: 11px;
+            }
+
+            .guide-footer-text {
+                display: none;
+            }
+
+            .guide-footer-close {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =====================================
+         ÜST MENÜ
+         ===================================== -->
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+            <a href="/" class="brand">
+
+                <div class="brand-icon">
+                    ✦
+                </div>
+
+                <div class="brand-text">
+
+                    <strong>
+                        Destek<span>Merkezi</span>
+                    </strong>
+
+                    <small>
+                        Uzman Yönetim Paneli
+                    </small>
+
+                </div>
+
+            </a>
+
+
+            <div class="nav-actions">
+
+                <!-- YENİ KULLANIM KILAVUZU BUTONU -->
+
+                <button
+                    id="openGuide"
+                    type="button"
+                    class="guide-button"
+                    aria-haspopup="dialog"
+                    aria-controls="guideOverlay"
+                >
+                    📖 Kullanım Kılavuzu
+                </button>
+
+
+                <a href="/" class="home-link">
+                    ← Müşteri Sayfası
+                </a>
+
+
+                <form action="/uzman/cikis" method="POST">
+
+                    <input
+                        type="hidden"
+                        name="csrf"
+                        value="{{ csrf }}"
+                    >
+
+                    <button
+                        class="logout-btn"
+                        type="submit"
+                    >
+                        Çıkış Yap
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         ANA İÇERİK
+         ===================================== -->
+
+    <main class="container main-content">
+
+        <!-- KARŞILAMA -->
+
+        <section class="welcome">
+
+            <div class="eyebrow">
+                YÖNETİM MERKEZİ
+            </div>
+
+            <h1>Uzman Kontrol Paneli</h1>
+
+            <p>
+                Müşteri görüşmelerini yönetin,
+                soruları yanıtlayın ve doğrulanmış
+                bilgileri yapay zekâya öğretin.
+            </p>
+
+        </section>
+
+
+        <!-- İSTATİSTİKLER -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    ◷
+                </div>
+
+                <div class="stat-info">
+                    <span>Yanıt Bekleyen</span>
+                    <strong>
+                        {{ counts.get('yeni', 0) }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    ◉
+                </div>
+
+                <div class="stat-info">
+                    <span>İncelenenler</span>
+                    <strong>
+                        {{ counts.get('inceleniyor', 0) }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    ✓
+                </div>
+
+                <div class="stat-info">
+                    <span>Çözülenler</span>
+                    <strong>
+                        {{ counts.get('cozuldu', 0) }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    ✦
+                </div>
+
+                <div class="stat-info">
+                    <span>Toplam Soru</span>
+                    <strong>
+                        {{ total_messages }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             MÜŞTERİ GÖRÜŞMELERİ
+             ===================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>💬 Müşteri Görüşmeleri</h2>
+
+                    <p>
+                        Görüşmelerden birini açarak
+                        mesaj geçmişini inceleyebilir
+                        ve müşteriye cevap verebilirsiniz.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-toolbar">
+
+                    <span class="ticket-count">
+                        {{ tickets | length }} görüşme
+                    </span>
+
+
+                    <button
+                        id="refreshDashboard"
+                        type="button"
+                        class="dashboard-refresh"
+                    >
+                        ↻ Listeyi Yenile
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="tickets-grid" id="ticketsGrid">
+
+                {% for ticket in tickets %}
+
+                <article class="ticket-card">
+
+                    <div class="ticket-header">
+
+                        <div class="ticket-user">
+
+                            <div class="ticket-avatar">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Müşteri Görüşmesi
+                                </strong>
+
+                                <small>
+                                    {{ ticket.updated_at[:16] }} UTC
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if ticket.status == "cozuldu" %}
+
+                        <span class="ticket-status solved">
+                            ✓ Çözüldü
+                        </span>
+
+                        {% elif ticket.status == "inceleniyor" %}
+
+                        <span class="ticket-status reviewing">
+                            ◉ İnceleniyor
+                        </span>
+
+                        {% else %}
+
+                        <span class="ticket-status pending">
+                            ◷ Yanıt Bekliyor
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="question-box">
+
+                        <div class="question-label">
+                            GÖRÜŞME KONUSU
+                        </div>
+
+                        <p>
+                            {{ ticket.question }}
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="/uzman/gorusme/{{ ticket.id }}"
+                        class="ticket-open"
+                    >
+                        Görüşmeyi Aç →
+                    </a>
+
+                </article>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📭
+                    </div>
+
+                    <h3>
+                        Henüz destek görüşmesi bulunmuyor.
+                    </h3>
+
+                    <p>
+                        Müşterilerin yanıtlanamayan
+                        soruları burada görünecek.
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SON MÜŞTERİ SORULARI
+             ===================================== -->
+
+        <section class="section history-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>📚 Son Müşteri Soruları</h2>
+
+                    <p>
+                        Sisteme gönderilen son 100 sorunun geçmişi
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="history-list">
+
+                {% for message in recent_messages %}
+
+                <div class="history-item">
+
+                    <div class="history-icon">
+                        💬
+                    </div>
+
+                    <div class="history-text">
+
+                        <strong>
+                            {{ message.question }}
+                        </strong>
+
+                        <small>
+                            {{ message.created_at[:16] }} UTC
+                        </small>
+
+                    </div>
+
+
+                    {% if message.response_type == "sss" %}
+
+                    <span class="history-tag ai">
+                        Yapay Zekâ
+                    </span>
+
+                    {% elif message.response_type == "knowledge" %}
+
+                    <span class="history-tag ai">
+                        Öğrenilen Bilgi
+                    </span>
+
+                    {% else %}
+
+                    <span class="history-tag expert">
+                        Uzman Desteği
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-state">
+                    Henüz müşteri sorusu bulunmuyor.
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+        © Destek Merkezi · Uzman Yönetim Sistemi
+    </footer>
+
+
+    <!-- =====================================
+         YENİ: KULLANIM KILAVUZU PENCERESİ
+         ===================================== -->
+
+    <div
+        id="guideOverlay"
+        class="guide-overlay hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="guideTitle"
+    >
+
+        <div class="guide-modal">
+
+            <!-- KILAVUZ BAŞLIĞI -->
+
+            <div class="guide-header">
+
+                <div class="guide-header-left">
+
+                    <div class="guide-icon">
+                        📖
+                    </div>
+
+                    <div>
+
+                        <h2 id="guideTitle">
+                            Uzman Kullanım Kılavuzu
+                        </h2>
+
+                        <p>
+                            Destek sistemini adım adım öğrenin.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="closeGuide"
+                    type="button"
+                    class="guide-close"
+                    aria-label="Kılavuzu kapat"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- KILAVUZ DÜZENİ -->
+
+            <div class="guide-layout">
+
+                <!-- SOL MENÜ -->
+
+                <nav
+                    class="guide-sidebar"
+                    aria-label="Kullanım kılavuzu bölümleri"
+                >
+
+                    <span class="guide-sidebar-title">
+                        KILAVUZ BÖLÜMLERİ
+                    </span>
+
+
+                    <button
+                        class="guide-nav-button active"
+                        data-guide="start"
+                        type="button"
+                    >
+                        🚀 Başlangıç
+                    </button>
+
+
+                    <button
+                        class="guide-nav-button"
+                        data-guide="tickets"
+                        type="button"
+                    >
+                        📩 Müşteri Talepleri
+                    </button>
+
+
+                    <button
+                        class="guide-nav-button"
+                        data-guide="chat"
+                        type="button"
+                    >
+                        💬 Mesajlaşma
+                    </button>
+
+
+                    <button
+                        class="guide-nav-button"
+                        data-guide="refresh"
+                        type="button"
+                    >
+                        🔄 Yenileme
+                    </button>
+
+
+                    <button
+                        class="guide-nav-button"
+                        data-guide="close"
+                        type="button"
+                    >
+                        ✅ Görüşme Sonlandırma
+                    </button>
+
+
+                    <button
+                        class="guide-nav-button"
+                        data-guide="learning"
+                        type="button"
+                    >
+                        🧠 Yapay Zekâya Öğretme
+                    </button>
+
+
+                    <button
+                        class="guide-nav-button"
+                        data-guide="security"
+                        type="button"
+                    >
+                        🔒 Güvenlik
+                    </button>
+
+
+                    <button
+                        class="guide-nav-button"
+                        data-guide="faq"
+                        type="button"
+                    >
+                        ❓ Sık Sorulan Sorular
+                    </button>
+
+                </nav>
+
+
+                <!-- SAĞ İÇERİK -->
+
+                <div
+                    id="guideContent"
+                    class="guide-content"
+                    tabindex="0"
+                >
+
+
+                    <!-- 1. BAŞLANGIÇ -->
+
+                    <section
+                        class="guide-page active"
+                        data-guide-page="start"
+                    >
+
+                        <h3>🚀 Destek Merkezine Hoş Geldiniz</h3>
+
+                        <p>
+                            Bu panel, müşterilerin destek taleplerini
+                            yönetmeniz için hazırlanmıştır.
+                            Sistemi daha önce kullanmamış olsanız
+                            bile bu kılavuzdaki adımları takip
+                            ederek çalışmaya başlayabilirsiniz.
+                        </p>
+
+
+                        <h4>Sistem Nasıl Çalışır?</h4>
+
+                        <ol>
+
+                            <li>
+                                Müşteri destek asistanına
+                                soru gönderir.
+                            </li>
+
+                            <li>
+                                Sistem soruyu mevcut bilgilerle
+                                yanıtlamaya çalışır.
+                            </li>
+
+                            <li>
+                                Yanıt bulunamazsa müşteri
+                                için bir destek görüşmesi açılır.
+                            </li>
+
+                            <li>
+                                Uzman görüşmeye girerek
+                                müşteriye yardımcı olur.
+                            </li>
+
+                            <li>
+                                Sorun çözüldüğünde uzman
+                                görüşmeyi sonlandırır.
+                            </li>
+
+                            <li>
+                                Uzman, genel kullanıma uygun
+                                bilgilerin yapay zekâya
+                                öğretilip öğretilmeyeceğini seçer.
+                            </li>
+
+                        </ol>
+
+
+                        <div class="guide-success">
+
+                            <strong>İlk yapmanız gereken:</strong>
+
+                            <br>
+
+                            Ana paneldeki
+                            <strong>Müşteri Görüşmeleri</strong>
+                            bölümünü kontrol edin.
+                            Yanıt bekleyen bir görüşme varsa
+                            <strong>Görüşmeyi Aç</strong>
+                            butonuyla başlayın.
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- 2. MÜŞTERİ TALEPLERİ -->
+
+                    <section
+                        class="guide-page"
+                        data-guide-page="tickets"
+                    >
+
+                        <h3>📩 Müşteri Taleplerini Yönetme</h3>
+
+                        <p>
+                            Müşterilerden gelen destek
+                            görüşmeleri ana panelde
+                            kartlar hâlinde gösterilir.
+                        </p>
+
+
+                        <h4>Bir Talebi Nasıl Açarsınız?</h4>
+
+                        <ol>
+
+                            <li>
+                                Ana panelde
+                                <strong>Müşteri Görüşmeleri</strong>
+                                bölümünü bulun.
+                            </li>
+
+                            <li>
+                                Görüşmenin konusunu okuyun.
+                            </li>
+
+                            <li>
+                                Kartın üzerindeki durum etiketini
+                                kontrol edin.
+                            </li>
+
+                            <li>
+                                <strong>Görüşmeyi Aç</strong>
+                                butonuna tıklayın.
+                            </li>
+
+                        </ol>
+
+
+                        <h4>Durum Etiketleri Ne Anlama Gelir?</h4>
+
+                        <div class="guide-example">
+
+                            <p>
+                                🟡 <strong>Yanıt Bekliyor</strong>
+                                — Müşteri yeni bir talep veya mesaj
+                                göndermiştir.
+                            </p>
+
+                            <p>
+                                🔵 <strong>İnceleniyor</strong>
+                                — Görüşme üzerinde işlem
+                                yapılmaktadır.
+                            </p>
+
+                            <p>
+                                🟢 <strong>Çözüldü</strong>
+                                — Uzman görüşmeyi sonlandırmıştır.
+                            </p>
+
+                        </div>
+
+
+                        <div class="guide-info">
+                            Görüşme sayısı arttığında liste
+                            kendi içinde kaydırılır.
+                            Sayfanın tamamını aşağıya kaydırmanız
+                            gerekmez.
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- 3. MESAJLAŞMA -->
+
+                    <section
+                        class="guide-page"
+                        data-guide-page="chat"
+                    >
+
+                        <h3>💬 Müşteriyle Mesajlaşma</h3>
+
+                        <p>
+                            Bir görüşmeyi açtığınızda
+                            müşteriyle yapılan önceki
+                            konuşmaları görebilirsiniz.
+                        </p>
+
+
+                        <h4>Mesaj Nasıl Gönderilir?</h4>
+
+                        <ol>
+
+                            <li>
+                                İlgili müşteri görüşmesini açın.
+                            </li>
+
+                            <li>
+                                Önceki mesajları okuyarak
+                                müşterinin talebini anlayın.
+                            </li>
+
+                            <li>
+                                Alt kısımdaki mesaj alanına
+                                cevabınızı yazın.
+                            </li>
+
+                            <li>
+                                <strong>Mesaj Gönder</strong>
+                                butonuna basın.
+                            </li>
+
+                            <li>
+                                Gönderdiğiniz mesajın
+                                konuşmada göründüğünü kontrol edin.
+                            </li>
+
+                        </ol>
+
+
+                        <div class="guide-example">
+
+                            <strong>Örnek Konuşma</strong>
+
+                            <p>
+                                <b>Müşteri:</b>
+                                Siparişim üç gündür gelmedi.
+                            </p>
+
+                            <p>
+                                <b>Uzman:</b>
+                                Teslimat durumunu inceleyebilmemiz
+                                için siparişinizin tarihini
+                                paylaşabilir misiniz?
+                            </p>
+
+                            <p>
+                                <b>Müşteri:</b>
+                                Pazartesi günü sipariş verdim.
+                            </p>
+
+                            <p>
+                                <b>Uzman:</b>
+                                Teşekkür ederiz.
+                                Durumunuzu kontrol etmeniz için
+                                ilgili adımları paylaşacağım.
+                            </p>
+
+                        </div>
+
+
+                        <div class="guide-warning">
+                            Müşteriden şifre, kart güvenlik kodu
+                            veya benzeri hassas bilgiler
+                            istemeyin. Sorun çözülmeden
+                            görüşmeyi sonlandırmayın.
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- 4. YENİLEME -->
+
+                    <section
+                        class="guide-page"
+                        data-guide-page="refresh"
+                    >
+
+                        <h3>🔄 Yeni Mesajları Kontrol Etme</h3>
+
+                        <p>
+                            Destek sistemi yeni mesajların
+                            görüntülenmesi için yenileme
+                            mekanizmaları kullanır.
+                        </p>
+
+
+                        <h4>Ana Paneli Yenileme</h4>
+
+                        <ol>
+
+                            <li>
+                                Uzman panelinin ana sayfasını açın.
+                            </li>
+
+                            <li>
+                                <strong>Listeyi Yenile</strong>
+                                butonuna basın.
+                            </li>
+
+                            <li>
+                                Yeni görüşmeler ve güncel
+                                durum etiketleri görüntülenir.
+                            </li>
+
+                        </ol>
+
+
+                        <h4>Görüşme İçindeki Mesajlar</h4>
+
+                        <p>
+                            Açık görüşme ekranında
+                            yeni mesajlar yaklaşık
+                            <strong>12 saniyede bir</strong>
+                            kontrol edilir.
+                        </p>
+
+
+                        <div class="guide-info">
+                            Görüşme ekranındaki otomatik kontrol,
+                            sayfanın tamamını yenilemez.
+                            Bu sayede mesaj yazarken
+                            çalışmanız bölünmez.
+                        </div>
+
+
+                        <div class="guide-warning">
+                            Ana paneldeki görüşme listesinin
+                            otomatik güncellendiğini varsaymayın.
+                            Yeni talepleri görmek için
+                            <strong>Listeyi Yenile</strong>
+                            butonunu kullanın.
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- 5. GÖRÜŞME SONLANDIRMA -->
+
+                    <section
+                        class="guide-page"
+                        data-guide-page="close"
+                    >
+
+                        <h3>✅ Görüşmeyi Sonlandırma</h3>
+
+                        <p>
+                            Müşterinin sorunu çözüldüğünde
+                            görüşmeyi sonlandırabilirsiniz.
+                        </p>
+
+
+                        <h4>Adım Adım Sonlandırma</h4>
+
+                        <ol>
+
+                            <li>
+                                Müşteriye gerekli açıklamaları yapın.
+                            </li>
+
+                            <li>
+                                Son mesajınızın gönderildiğinden
+                                emin olun.
+                            </li>
+
+                            <li>
+                                <strong>Görüşmeyi Sonlandır</strong>
+                                butonuna basın.
+                            </li>
+
+                            <li>
+                                Açılan pencerede görüşmeden
+                                bilgi bankasına kayıt
+                                eklenip eklenmeyeceğini seçin.
+                            </li>
+
+                            <li>
+                                Son onay adımını tamamlayın.
+                            </li>
+
+                        </ol>
+
+
+                        <div class="guide-success">
+                            Görüşme sonlandırıldığında
+                            müşteri eski mesajları okuyabilir,
+                            ancak o görüşmeye yeni mesaj gönderemez.
+                        </div>
+
+
+                        <div class="guide-warning">
+                            Gönderilmemiş bir mesajınız varsa
+                            görüşmeyi sonlandırmadan önce
+                            mesajı gönderin.
+                            Aksi hâlde taslak mesaj
+                            müşteriye ulaşmaz.
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- 6. YAPAY ZEKÂYA ÖĞRETME -->
+
+                    <section
+                        class="guide-page"
+                        data-guide-page="learning"
+                    >
+
+                        <h3>🧠 Yapay Zekâya Bilgi Öğretme</h3>
+
+                        <p>
+                            Yapay zekâ başlangıçta belirli
+                            sorulara cevap verebilir.
+                            Uzmanların onayladığı genel bilgiler,
+                            sistemin yanıtlayabildiği
+                            soru sayısının artmasına yardımcı olur.
+                        </p>
+
+
+                        <h4>Bilgi Nasıl Öğretilir?</h4>
+
+                        <ol>
+
+                            <li>
+                                Müşteri görüşmesini tamamlayın.
+                            </li>
+
+                            <li>
+                                <strong>Görüşmeyi Sonlandır</strong>
+                                butonuna basın.
+                            </li>
+
+                            <li>
+                                <strong>
+                                    Evet, Yapay Zekâya Öğret
+                                </strong>
+                                seçeneğini işaretleyin.
+                            </li>
+
+                            <li>
+                                Öğretilecek soru ve cevabı
+                                kontrol edin.
+                            </li>
+
+                            <li>
+                                Gerekirse metni düzenleyin.
+                            </li>
+
+                            <li>
+                                Onay adımlarını tamamlayarak
+                                görüşmeyi sonlandırın.
+                            </li>
+
+                        </ol>
+
+
+                        <div class="guide-example">
+
+                            <strong>
+                                Öğretilebilecek Bilgi Örneği
+                            </strong>
+
+                            <p>
+                                <b>Soru:</b>
+                                Hediye paketi hazırlıyor musunuz?
+                            </p>
+
+                            <p>
+                                <b>Cevap:</b>
+                                Evet, talep eden müşterilerimiz
+                                için hediye paketi hazırlıyoruz.
+                            </p>
+
+                        </div>
+
+
+                        <div class="guide-example">
+
+                            <strong>
+                                Öğretilmemesi Gereken Bilgi Örneği
+                            </strong>
+
+                            <p>
+                                <b>Soru:</b>
+                                Benim siparişim ne zaman gelecek?
+                            </p>
+
+                            <p>
+                                <b>Cevap:</b>
+                                Siparişiniz yarın teslim edilecek.
+                            </p>
+
+                        </div>
+
+
+                        <div class="guide-warning">
+                            İkinci örnek müşteriye özeldir.
+                            Başka müşterilere aynı cevabın
+                            verilmesi yanlış olur.
+                            Böyle bir durumda
+                            <strong>Öğretmeden Sonlandır</strong>
+                            seçeneğini kullanın.
+                        </div>
+
+
+                        <h4>Yapay Zekâ Gerçekten Öğreniyor mu?</h4>
+
+                        <p>
+                            Sistem, uzman tarafından onaylanan
+                            bilgileri kendi bilgi bankasına ekler.
+                            Daha sonra gelen sorularla bu
+                            bilgileri karşılaştırabilir.
+                        </p>
+
+                        <p>
+                            Bu işlem temel yapay zekâ modelini
+                            yeniden eğitmez. Sistemin kullanabildiği
+                            doğrulanmış bilgi birikimini artırır.
+                        </p>
+
+                    </section>
+
+
+
+                    <!-- 7. GÜVENLİK -->
+
+                    <section
+                        class="guide-page"
+                        data-guide-page="security"
+                    >
+
+                        <h3>🔒 Güvenlik ve Müşteri Gizliliği</h3>
+
+                        <p>
+                            Uzman panelinde müşteri mesajlarına
+                            erişebilirsiniz. Bu nedenle müşteri
+                            bilgilerinin korunması önemlidir.
+                        </p>
+
+
+                        <h4>Uymanız Gereken Kurallar</h4>
+
+                        <ul>
+
+                            <li>
+                                Yönetici şifrenizi başkalarıyla
+                                paylaşmayın.
+                            </li>
+
+                            <li>
+                                Müşteriden hesap şifresi veya
+                                kart güvenlik kodu istemeyin.
+                            </li>
+
+                            <li>
+                                Müşteriye özel bilgileri yapay
+                                zekânın bilgi bankasına eklemeyin.
+                            </li>
+
+                            <li>
+                                Doğruluğundan emin olmadığınız
+                                bilgileri onaylamayın.
+                            </li>
+
+                            <li>
+                                Ortak bilgisayar kullanıyorsanız
+                                işiniz bittiğinde çıkış yapın.
+                            </li>
+
+                            <li>
+                                Müşteri bilgilerini yetkisiz
+                                kişilerle paylaşmayın.
+                            </li>
+
+                        </ul>
+
+
+                        <div class="guide-warning">
+                            <strong>Önemli:</strong>
+                            Bilgi bankasına eklenen bir cevap
+                            başka müşterilere de sunulabilir.
+                            Bu nedenle öğretme kararından önce
+                            içeriği dikkatle kontrol edin.
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- 8. SIK SORULAN SORULAR -->
+
+                    <section
+                        class="guide-page"
+                        data-guide-page="faq"
+                    >
+
+                        <h3>❓ Sık Sorulan Sorular</h3>
+
+                        <p>
+                            Sistemi kullanırken karşılaşabileceğiniz
+                            temel soruların cevapları aşağıdadır.
+                        </p>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                Yeni müşteri talebini nasıl görebilirim?
+                            </summary>
+
+                            <p>
+                                Ana paneldeki
+                                <strong>Listeyi Yenile</strong>
+                                butonuna basın.
+                                Ardından Müşteri Görüşmeleri
+                                bölümünü kontrol edin.
+                            </p>
+
+                        </details>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                Müşteriye nasıl cevap gönderebilirim?
+                            </summary>
+
+                            <p>
+                                İlgili görüşmeyi açın.
+                                Mesaj alanına cevabınızı yazıp
+                                <strong>Mesaj Gönder</strong>
+                                butonuna basın.
+                            </p>
+
+                        </details>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                Müşteri ek bilgi gönderebilir mi?
+                            </summary>
+
+                            <p>
+                                Evet. Görüşme açık olduğu sürece
+                                müşteri aynı konuşmadan
+                                yeni mesaj gönderebilir.
+                            </p>
+
+                        </details>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                Görüşmeyi sonlandırınca ne olur?
+                            </summary>
+
+                            <p>
+                                Görüşmenin durumu
+                                <strong>Çözüldü</strong> olur.
+                                Müşteri geçmiş mesajları görebilir,
+                                ancak kapatılan görüşmeye
+                                yeni mesaj gönderemez.
+                            </p>
+
+                        </details>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                Her konuşmayı yapay zekâya
+                                öğretmeli miyim?
+                            </summary>
+
+                            <p>
+                                Hayır. Yalnızca doğrulanmış
+                                ve genel kullanıma uygun
+                                bilgileri onaylayın.
+                                Müşteriye özel görüşmeleri
+                                öğretmeden sonlandırın.
+                            </p>
+
+                        </details>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                Yanlışlıkla bilgi öğretirsem
+                                ne yapmalıyım?
+                            </summary>
+
+                            <p>
+                                Kaydın pasifleştirilmesi gerekir.
+                                Mevcut sürümde bütün bilgilerin
+                                yönetildiği ayrı bir ekran
+                                bulunmadığından, kayıt düzeltme
+                                işlemi için sistem yöneticisine
+                                başvurun.
+                            </p>
+
+                        </details>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                Müşteri yeni soru sormak isterse
+                                ne yapmalı?
+                            </summary>
+
+                            <p>
+                                Müşteri ana sayfadaki
+                                destek asistanından yeni
+                                bir soru gönderebilir.
+                                Gerekirse sistem yeni
+                                destek görüşmesi oluşturur.
+                            </p>
+
+                        </details>
+
+
+                        <details class="guide-faq">
+
+                            <summary>
+                                İşim bitince nasıl çıkış yaparım?
+                            </summary>
+
+                            <p>
+                                Uzman panelinin sağ üstündeki
+                                <strong>Çıkış Yap</strong>
+                                butonunu kullanın.
+                            </p>
+
+                        </details>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+
+            <!-- KILAVUZ ALT BÖLÜMÜ -->
+
+            <div class="guide-footer">
+
+                <span class="guide-footer-text">
+                    Destek Merkezi · Uzman Eğitim Rehberi
+                </span>
+
+
+                <button
+                    id="closeGuideBottom"
+                    class="guide-footer-close"
+                    type="button"
+                >
+                    Anladım, Kılavuzu Kapat
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         JAVASCRIPT
+         ===================================== -->
+
+    <script>
+
+        "use strict";
+
+        /* PANEL YENİLEME */
+
+        const refreshDashboard =
+            document.getElementById("refreshDashboard");
+
+        refreshDashboard.addEventListener(
+            "click",
+            () => {
+
+                window.location.reload();
+
+            }
+        );
+
+
+        /* KULLANIM KILAVUZU */
+
+        const guideOverlay =
+            document.getElementById("guideOverlay");
+
+        const openGuideButton =
+            document.getElementById("openGuide");
+
+        const closeGuideButton =
+            document.getElementById("closeGuide");
+
+        const closeGuideBottom =
+            document.getElementById("closeGuideBottom");
+
+        const guideContent =
+            document.getElementById("guideContent");
+
+        const guideButtons =
+            document.querySelectorAll(
+                ".guide-nav-button"
+            );
+
+        const guidePages =
+            document.querySelectorAll(
+                ".guide-page"
+            );
+
+        let previousFocus = null;
+
+
+        function showGuidePage(pageName) {
+
+            guideButtons.forEach(button => {
+
+                const active =
+                    button.dataset.guide === pageName;
+
+                button.classList.toggle(
+                    "active",
+                    active
+                );
+
+                if (active) {
+                    button.setAttribute(
+                        "aria-current",
+                        "page"
+                    );
+                } else {
+                    button.removeAttribute(
+                        "aria-current"
+                    );
+                }
+
+            });
+
+
+            guidePages.forEach(page => {
+
+                page.classList.toggle(
+                    "active",
+                    page.dataset.guidePage === pageName
+                );
+
+            });
+
+
+            guideContent.scrollTop = 0;
+
+        }
+
+
+        function openGuide() {
+
+            previousFocus = document.activeElement;
+
+            guideOverlay.classList.remove("hidden");
+
+            document.body.classList.add("guide-open");
+
+            showGuidePage("start");
+
+            closeGuideButton.focus();
+
+        }
+
+
+        function closeGuide() {
+
+            guideOverlay.classList.add("hidden");
+
+            document.body.classList.remove("guide-open");
+
+            if (
+                previousFocus &&
+                typeof previousFocus.focus === "function"
+            ) {
+                previousFocus.focus();
+            }
+
+        }
+
+
+        openGuideButton.addEventListener(
+            "click",
+            openGuide
+        );
+
+
+        closeGuideButton.addEventListener(
+            "click",
+            closeGuide
+        );
+
+
+        closeGuideBottom.addEventListener(
+            "click",
+            closeGuide
+        );
+
+
+        guideButtons.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    showGuidePage(
+                        button.dataset.guide
+                    );
+
+                }
+            );
+
+        });
+
+
+        guideOverlay.addEventListener(
+            "click",
+            event => {
+
+                if (event.target === guideOverlay) {
+
+                    closeGuide();
+
+                }
+
+            }
+        );
+
+
+        /* ESC İLE KAPATMA VE KLAVYE ODAĞI */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    guideOverlay.classList.contains("hidden")
+                ) {
+                    return;
+                }
+
+                if (event.key === "Escape") {
+
+                    event.preventDefault();
+
+                    closeGuide();
+
+                    return;
+                }
+
+                if (event.key !== "Tab") {
+                    return;
+                }
+
+                const focusable = Array.from(
+                    guideOverlay.querySelectorAll(
+                        'button:not([disabled]), ' +
+                        'a[href], ' +
+                        'input:not([disabled]), ' +
+                        'summary, ' +
+                        '[tabindex="0"]'
+                    )
+                ).filter(element => {
+
+                    return element.getClientRects().length > 0;
+
+                });
+
+                if (!focusable.length) {
+                    return;
+                }
+
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (
+                    event.shiftKey &&
+                    document.activeElement === first
+                ) {
+
+                    event.preventDefault();
+
+                    last.focus();
+
+                } else if (
+                    !event.shiftKey &&
+                    document.activeElement === last
+                ) {
+
+                    event.preventDefault();
+
+                    first.focus();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

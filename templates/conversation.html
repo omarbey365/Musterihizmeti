@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Uzman Görüşmesi | Destek Merkezi</title>
+
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5141c8;
+            --background: #f6f7fc;
+            --surface: #ffffff;
+            --border: #e6e8f1;
+            --text: #25304b;
+            --muted: #828da1;
+            --success: #168d5d;
+            --danger: #c43b3b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: "Segoe UI", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        button,
+        textarea,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        .topbar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        .topbar-inner {
+            max-width: 1000px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .top-label {
+            color: var(--success);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px 50px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(30,40,90,.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 23px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h1 {
+            margin: 0 0 5px;
+            font-size: 20px;
+        }
+
+        .card-header p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #fff4df;
+            color: #a47725;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status.reviewing {
+            background: #eaf3ff;
+            color: #347ddd;
+        }
+
+        .status.solved {
+            background: #e4f8ed;
+            color: var(--success);
+        }
+
+        /* MESAJLAŞMA */
+
+        .messages {
+            height: 440px;
+            overflow-y: auto;
+            padding: 24px;
+            background: #fcfcff;
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 17px;
+        }
+
+        .message-row.customer {
+            justify-content: flex-start;
+        }
+
+        .message-row.expert {
+            justify-content: flex-end;
+        }
+
+        .message {
+            max-width: 78%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 13px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .customer .message {
+            background: #edf0f8;
+            color: #25314a;
+            border-bottom-left-radius: 5px;
+        }
+
+        .expert .message {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-name {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            opacity: .8;
+        }
+
+        .message-time {
+            display: block;
+            text-align: right;
+            font-size: 10px;
+            opacity: .65;
+            margin-top: 7px;
+        }
+
+        /* YANIT ALANI */
+
+        .reply-area {
+            padding: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        textarea,
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dfe3ee;
+            border-radius: 12px;
+            background: white;
+            color: var(--text);
+            outline: none;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        textarea:focus,
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108,92,231,.08);
+        }
+
+        .reply-area textarea {
+            min-height: 105px;
+        }
+
+        .reply-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .primary-button,
+        .close-button,
+        .secondary-button {
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 13px 19px;
+        }
+
+        .primary-button {
+            border: none;
+            background: var(--primary);
+            color: white;
+        }
+
+        .primary-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .close-button {
+            background: #e6f6ed;
+            border: 1px solid #c6e8d4;
+            color: var(--success);
+        }
+
+        .close-button:hover {
+            background: #d6f1e3;
+        }
+
+        .secondary-button {
+            background: white;
+            border: 1px solid #dfe1ec;
+            color: #69738a;
+        }
+
+        .secondary-button:hover {
+            background: #f7f8fc;
+        }
+
+        .notice {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .notice.error {
+            color: var(--danger);
+        }
+
+        .closed-notice {
+            margin: 20px;
+            padding: 17px;
+            background: #e6f6ed;
+            border: 1px solid #c6e8d4;
+            border-radius: 12px;
+            color: var(--success);
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ÖZEL ONAY PENCERESİ */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(22,28,49,.67);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            width: min(100%, 620px);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 22px;
+            box-shadow: 0 30px 80px rgba(0,0,0,.24);
+        }
+
+        .modal-top {
+            position: relative;
+            padding: 27px 28px 22px;
+            background: linear-gradient(
+                135deg,
+                #f4f1ff,
+                #ffffff
+            );
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-icon {
+            width: 55px;
+            height: 55px;
+            display: grid;
+            place-items: center;
+            background: #e7e2ff;
+            border-radius: 16px;
+            font-size: 27px;
+            margin-bottom: 15px;
+        }
+
+        .modal h2 {
+            margin: 0 0 8px;
+            font-size: 22px;
+        }
+
+        .modal-description {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .modal-x {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 34px;
+            height: 34px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #778198;
+            font-size: 20px;
+        }
+
+        .modal-body {
+            padding: 24px 28px 28px;
+        }
+
+        .decision-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e7f0;
+            border-radius: 14px;
+            background: #fcfcff;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .decision-box:hover {
+            border-color: #bcb3f8;
+        }
+
+        .decision-box.selected {
+            border-color: var(--primary);
+            background: #f6f3ff;
+            box-shadow: 0 0 0 2px rgba(108,92,231,.06);
+        }
+
+        .decision-box input {
+            margin-top: 5px;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .decision-box strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .decision-box small {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .learning-fields {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fbfaff;
+            border: 1px solid #e6e1ff;
+            border-radius: 14px;
+        }
+
+        .learning-fields h3 {
+            margin: 0 0 14px;
+            font-size: 14px;
+            color: var(--primary-dark);
+        }
+
+        .learning-fields label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .learning-fields input,
+        .learning-fields textarea {
+            margin-bottom: 17px;
+        }
+
+        .learning-fields textarea {
+            min-height: 110px;
+        }
+
+        .learning-info {
+            padding: 13px;
+            background: #fff8e9;
+            border: 1px solid #f4e3b9;
+            border-radius: 10px;
+            color: #946d24;
+            font-size: 11px;
+            margin-bottom: 17px;
+        }
+
+        /* TARAYICI ONAYI YERİNE SON ONAY ADIMI */
+
+        .final-confirmation {
+            padding: 20px;
+            background: #f6f8fd;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            margin-top: 15px;
+        }
+
+        .final-confirmation h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .final-confirmation p {
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .confirmation-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .confirmation-check input {
+            margin-top: 3px;
+            accent-color: var(--primary);
+        }
+
+        .modal-error {
+            margin-top: 14px;
+            color: var(--danger);
+            font-size: 12px;
+        }
+
+        .modal-error:empty {
+            display: none;
+        }
+
+        .unsent-warning {
+            background: #fff8e9;
+            color: #916b24;
+            border: 1px solid #f4e3b9;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 11px;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                margin-top: 15px;
+                padding: 0 12px 35px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .messages {
+                height: 370px;
+                padding: 15px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .reply-bottom,
+            .action-group,
+            .modal-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-group,
+            .primary-button,
+            .close-button,
+            .secondary-button {
+                width: 100%;
+            }
+
+            .modal {
+                border-radius: 16px;
+            }
+
+            .modal-top,
+            .modal-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a href="/uzman" class="back">
+                ← Uzman Paneline Dön
+            </a>
+
+            <span class="top-label">
+                ● Uzman görüşmesi
+            </span>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="card">
+
+            <div class="card-header">
+                <div>
+                    <h1>💬 Müşteri Görüşmesi</h1>
+                    <p>{{ ticket.question }}</p>
+                </div>
+
+                <span id="statusBadge" class="status">
+                    Kontrol ediliyor...
+                </span>
+            </div>
+
+            <div
+                id="conversationMessages"
+                class="messages"
+                aria-live="polite"
+            ></div>
+
+            <form id="replyForm" class="reply-area">
+
+                <input
+                    type="hidden"
+                    id="csrf"
+                    value="{{ csrf }}"
+                >
+
+                <textarea
+                    id="replyText"
+                    maxlength="10000"
+                    placeholder="Müşteriye mesajınızı yazın..."
+                    required
+                ></textarea>
+
+                <div class="reply-bottom">
+                    <span class="notice">
+                        Mesajlaşma devam ediyor.
+                    </span>
+
+                    <div class="action-group">
+                        <button
+                            id="sendReply"
+                            class="primary-button"
+                            type="submit"
+                        >
+                            Mesaj Gönder →
+                        </button>
+
+                        <button
+                            id="openCloseModal"
+                            class="close-button"
+                            type="button"
+                        >
+                            ✓ Görüşmeyi Sonlandır
+                        </button>
+                    </div>
+                </div>
+
+                <div id="notice" class="notice" role="status">
+                    Yeni mesajlar 12 saniyede bir kontrol edilir.
+                </div>
+
+            </form>
+
+            <div
+                id="closedNotice"
+                class="closed-notice hidden"
+            >
+                ✓ Bu görüşme sonlandırıldı.
+                Müşteri yeni mesaj gönderirse yeniden açılabilir.
+            </div>
+
+        </section>
+    </main>
+
+    <!-- GÖRÜŞME SONLANDIRMA PENCERESİ -->
+
+    <div
+        id="closeModal"
+        class="modal-backdrop hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="closeModalTitle"
+    >
+        <div class="modal">
+
+            <div class="modal-top">
+                <button
+                    id="modalX"
+                    class="modal-x"
+                    type="button"
+                    aria-label="Pencereyi kapat"
+                >
+                    ×
+                </button>
+
+                <div class="modal-icon">🧠</div>
+
+                <h2 id="closeModalTitle">
+                    Görüşmeyi Sonlandır
+                </h2>
+
+                <p class="modal-description">
+                    Bu görüşmeden edinilen bilgilerin
+                    yapay zekânın bilgi bankasına
+                    eklenip eklenmeyeceğini seçin.
+                </p>
+            </div>
+
+            <div class="modal-body">
+
+                <div id="decisionStage">
+
+                    <div
+                        id="unsentWarning"
+                        class="unsent-warning hidden"
+                    >
+                        ⚠️ Gönderilmemiş bir mesajınız var.
+                        Görüşmeyi sonlandırırsanız bu mesaj
+                        müşteriye gönderilmeyecek.
+                    </div>
+
+                    <label
+                        id="yesCard"
+                        class="decision-box"
+                    >
+                        <input
+                            type="radio"
+                            name="learningDecision"
+                            id="learnYes"
+                            value="yes"
+                        >
+
+                        <span>
+                            <strong>
+                                🧠 Evet, Yapay Zekâya Öğret
+                            </strong>
+
+                            <small>
+                                Görüşmeden elde edilen genel bilgiyi,
+                                kontrol ederek bilgi bankasına kaydet.
+                            </small>
+                        </span>
+                    </label>
+
+                    <label
+                        id="noCard"
+                        class="decision-box"
+                    >
+                        <input
+                            type="radio"
+                            name="learningDecision"
+                            id="learnNo"
+                            value="no"
+                        >
+
+                        <span>
+                            <strong>
+                                🔒 Hayır, Öğretmeden Sonlandır
+                            </strong>
+
+                            <small>
+                                Görüşmeyi kapat ve konuşma geçmişini koru.
+                                Yapay zekâya yeni bilgi ekleme.
+                            </small>
+                        </span>
+                    </label>
+
+                    <div
+                        id="learningFields"
+                        class="learning-fields hidden"
+                    >
+                        <h3>📝 Öğretilecek Bilgiyi Düzenle</h3>
+
+                        <div class="learning-info">
+                            Müşteriye özel bilgileri, sipariş
+                            numaralarını ve kişisel verileri
+                            bilgi bankasına eklemeyin.
+                        </div>
+
+                        <label for="knowledgeQuestion">
+                            Yapay zekâya öğretilecek soru
+                        </label>
+
+                        <input
+                            id="knowledgeQuestion"
+                            type="text"
+                            minlength="8"
+                            maxlength="500"
+                            placeholder="Genel soru..."
+                        >
+
+                        <label for="knowledgeAnswer">
+                            Yapay zekâya öğretilecek cevap
+                        </label>
+
+                        <textarea
+                            id="knowledgeAnswer"
+                            minlength="10"
+                            maxlength="3000"
+                            placeholder="Doğrulanmış genel cevap..."
+                        ></textarea>
+                    </div>
+
+                </div>
+
+                <!-- ÖZEL SON ONAY EKRANI -->
+
+                <div
+                    id="confirmationStage"
+                    class="final-confirmation hidden"
+                >
+                    <h3>Son Onay</h3>
+
+                    <p id="confirmationSummary"></p>
+
+                    <label class="confirmation-check">
+                        <input
+                            id="finalCheckbox"
+                            type="checkbox"
+                        >
+
+                        <span>
+                            Seçimimi kontrol ettim.
+                            Görüşmenin sonlandırılmasını onaylıyorum.
+                        </span>
+                    </label>
+                </div>
+
+                <div
+                    id="modalError"
+                    class="modal-error"
+                    role="alert"
+                ></div>
+
+                <div class="modal-actions">
+
+                    <button
+                        id="cancelClose"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        Görüşmeye Dön
+                    </button>
+
+                    <button
+                        id="confirmClose"
+                        class="primary-button"
+                        type="button"
+                        disabled
+                    >
+                        Devam Et →
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        "use strict";
+
+        const ticketId = {{ ticket.id | tojson }};
+        const originalQuestion = {{ ticket.question | tojson }};
+
+        const $ = id => document.getElementById(id);
+
+        const csrf = $("csrf").value;
+
+        let currentStatus = "yeni";
+        let latestExpertReply = "";
+        let lastSignature = "";
+        let loading = false;
+        let sending = false;
+        let closing = false;
+        let confirmationStep = false;
+
+        function formatDate(value) {
+            if (!value) return "";
+
+            const date = new Date(value);
+
+            return Number.isNaN(date.getTime())
+                ? ""
+                : date.toLocaleString("tr-TR");
+        }
+
+        function renderMessages(messages) {
+            const box = $("conversationMessages");
+
+            const nearBottom =
+                box.scrollHeight -
+                box.scrollTop -
+                box.clientHeight < 100;
+
+            const firstRender = !lastSignature;
+
+            box.replaceChildren();
+
+            messages.forEach(item => {
+                const row = document.createElement("div");
+                row.className = "message-row " + item.sender;
+
+                const bubble = document.createElement("div");
+                bubble.className = "message";
+
+                const name = document.createElement("span");
+                name.className = "message-name";
+                name.textContent =
+                    item.sender === "expert"
+                        ? "Siz · Uzman"
+                        : "Müşteri";
+
+                const content = document.createElement("div");
+                content.textContent = item.message;
+
+                const time = document.createElement("span");
+                time.className = "message-time";
+                time.textContent = formatDate(item.created_at);
+
+                bubble.append(name, content, time);
+                row.append(bubble);
+                box.append(row);
+            });
+
+            if (nearBottom || firstRender) {
+                box.scrollTop = box.scrollHeight;
+            }
+        }
+
+        function updateStatus(status) {
+            currentStatus = status;
+
+            const badge = $("statusBadge");
+            badge.className = "status";
+
+            if (status === "cozuldu") {
+                badge.textContent = "Çözüldü";
+                badge.classList.add("solved");
+            } else if (status === "inceleniyor") {
+                badge.textContent = "İnceleniyor";
+                badge.classList.add("reviewing");
+            } else {
+                badge.textContent = "Yanıt bekleniyor";
+            }
+
+            const closed = status === "cozuldu";
+
+            $("replyForm").classList.toggle("hidden", closed);
+            $("closedNotice").classList.toggle("hidden", !closed);
+        }
+
+        async function loadMessages() {
+            if (loading || document.hidden) return;
+
+            loading = true;
+
+            try {
+                const response = await fetch(
+                    "/uzman/api/gorusme/" + ticketId,
+                    { cache: "no-store" }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Mesajlar alınamadı.");
+                }
+
+                const data = await response.json();
+                const signature = JSON.stringify(data.messages);
+
+                if (signature !== lastSignature) {
+                    renderMessages(data.messages);
+                    lastSignature = signature;
+                }
+
+                latestExpertReply = data.expert_reply || "";
+
+                if (!closing) {
+                    updateStatus(data.status);
+                }
+
+                $("notice").textContent =
+                    "Görüşme güncel. Mesajlar otomatik kontrol ediliyor.";
+
+                $("notice").classList.remove("error");
+
+            } catch (error) {
+                $("notice").textContent = error.message;
+                $("notice").classList.add("error");
+            } finally {
+                loading = false;
+            }
+        }
+
+        $("replyForm").addEventListener(
+            "submit",
+            async event => {
+                event.preventDefault();
+
+                const text = $("replyText").value.trim();
+
+                if (
+                    !text ||
+                    sending ||
+                    closing ||
+                    currentStatus === "cozuldu"
+                ) {
+                    return;
+                }
+
+                sending = true;
+                $("sendReply").disabled = true;
+                $("openCloseModal").disabled = true;
+
+                const data = new FormData();
+                data.append("answer", text);
+                data.append("status", "inceleniyor");
+                data.append("csrf", csrf);
+
+                try {
+                    const response = await fetch(
+                        "/uzman/api/gorusme/" +
+                        ticketId + "/yanit",
+                        {
+                            method: "POST",
+                            body: data
+                        }
+                    );
+
+                    const result = await response.json()
+                        .catch(() => ({}));
+
+                    if (!response.ok) {
+                        throw new Error(
+                            result.detail || "Mesaj gönderilemedi."
+                        );
+                    }
+
+                    $("replyText").value = "";
+                    lastSignature = "";
+
+                    await loadMessages();
+
+                } catch (error) {
+                    $("notice").textContent = error.message;
+                    $("notice").classList.add("error");
+                } finally {
+                    sending = false;
+                    $("sendReply").disabled = false;
+                    $("openCloseModal").disabled = false;
+                }
+            }
+        );
+
+        function updateDecision() {
+            const yes = $("learnYes").checked;
+            const no = $("learnNo").checked;
+
+            $("yesCard").classList.toggle("selected", yes);
+            $("noCard").classList.toggle("selected", no);
+
+            $("learningFields").classList.toggle("hidden", !yes);
+
+            $("confirmClose").disabled = !(yes || no);
+
+            $("modalError").textContent = "";
+
+            if (yes) {
+                if (!$("knowledgeQuestion").value.trim()) {
+                    $("knowledgeQuestion").value = originalQuestion;
+                }
+
+                if (!$("knowledgeAnswer").value.trim()) {
+                    $("knowledgeAnswer").value = latestExpertReply;
+                }
+            }
+        }
+
+        function showModal() {
+            if (
+                sending ||
+                closing ||
+                currentStatus === "cozuldu"
+            ) {
+                return;
+            }
+
+            $("learnYes").checked = false;
+            $("learnNo").checked = false;
+
+            $("knowledgeQuestion").value = "";
+            $("knowledgeAnswer").value = "";
+
+            $("finalCheckbox").checked = false;
+            $("modalError").textContent = "";
+
+            $("unsentWarning").classList.toggle(
+                "hidden",
+                !$("replyText").value.trim()
+            );
+
+            confirmationStep = false;
+
+            $("decisionStage").classList.remove("hidden");
+            $("confirmationStage").classList.add("hidden");
+
+            $("cancelClose").textContent = "Görüşmeye Dön";
+            $("confirmClose").textContent = "Devam Et →";
+
+            updateDecision();
+
+            $("closeModal").classList.remove("hidden");
+            document.body.classList.add("modal-open");
+
+            $("modalX").focus();
+        }
+
+        function hideModal() {
+            if (closing) return;
+
+            $("closeModal").classList.add("hidden");
+            document.body.classList.remove("modal-open");
+
+            $("openCloseModal").focus();
+        }
+
+        $("openCloseModal").addEventListener("click", showModal);
+        $("modalX").addEventListener("click", hideModal);
+
+        $("closeModal").addEventListener("click", event => {
+            if (event.target === $("closeModal")) {
+                hideModal();
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (
+                event.key === "Escape" &&
+                !$("closeModal").classList.contains("hidden")
+            ) {
+                hideModal();
+            }
+        });
+
+        $("learnYes").addEventListener("change", updateDecision);
+        $("learnNo").addEventListener("change", updateDecision);
+
+        $("finalCheckbox").addEventListener("change", () => {
+            $("confirmClose").disabled =
+                !$("finalCheckbox").checked;
+        });
+
+        $("cancelClose").addEventListener("click", () => {
+            if (!confirmationStep) {
+                hideModal();
+                return;
+            }
+
+            confirmationStep = false;
+
+            $("confirmationStage").classList.add("hidden");
+            $("decisionStage").classList.remove("hidden");
+
+            $("finalCheckbox").checked = false;
+
+            $("cancelClose").textContent = "Görüşmeye Dön";
+            $("confirmClose").textContent = "Devam Et →";
+
+            updateDecision();
+        });
+
+        $("confirmClose").addEventListener("click", async () => {
+            if (closing) return;
+
+            const learn = $("learnYes").checked
+                ? "yes"
+                : $("learnNo").checked
+                ? "no"
+                : null;
+
+            if (!learn) return;
+
+            const question = $("knowledgeQuestion").value.trim();
+            const answer = $("knowledgeAnswer").value.trim();
+
+            $("modalError").textContent = "";
+
+            if (!confirmationStep) {
+                if (learn === "yes") {
+                    if (question.length < 8 || question.length > 500) {
+                        $("modalError").textContent =
+                            "Soru 8-500 karakter arasında olmalı.";
+                        return;
+                    }
+
+                    if (answer.length < 10 || answer.length > 3000) {
+                        $("modalError").textContent =
+                            "Cevap 10-3000 karakter arasında olmalı.";
+                        return;
+                    }
+                }
+
+                $("confirmationSummary").textContent =
+                    learn === "yes"
+                        ? "Görüşme kapatılacak. Onayladığınız soru " +
+                          "ve cevap yapay zekânın bilgi bankasına " +
+                          "eklenecek. Kaydetmeden önce bilgilerin " +
+                          "doğru ve genel kullanıma uygun olduğundan " +
+                          "emin olun."
+                        : "Görüşme kapatılacak. Konuşma geçmişi " +
+                          "saklanacak ancak yapay zekânın bilgi " +
+                          "bankasına yeni kayıt eklenmeyecek.";
+
+                confirmationStep = true;
+
+                $("decisionStage").classList.add("hidden");
+                $("confirmationStage").classList.remove("hidden");
+
+                $("cancelClose").textContent = "← Geri";
+                $("confirmClose").textContent =
+                    "✓ Görüşmeyi Sonlandır";
+
+                $("finalCheckbox").checked = false;
+                $("confirmClose").disabled = true;
+
+                return;
+            }
+
+            if (!$("finalCheckbox").checked) return;
+
+            closing = true;
+            $("confirmClose").disabled = true;
+            $("cancelClose").disabled = true;
+            $("modalX").disabled = true;
+
+            const formData = new FormData();
+
+            formData.append("learn", learn);
+            formData.append("csrf", csrf);
+
+            if (learn === "yes") {
+                formData.append("question", question);
+                formData.append("answer", answer);
+            }
+
+            try {
+                const response = await fetch(
+                    "/uzman/api/gorusme/" +
+                    ticketId + "/sonlandir",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+                const data = await response.json()
+                    .catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.detail || "Görüşme sonlandırılamadı."
+                    );
+                }
+
+                window.location.href = "/uzman";
+
+            } catch (error) {
+                $("modalError").textContent = error.message;
+
+                $("confirmClose").disabled = false;
+                $("cancelClose").disabled = false;
+                $("modalX").disabled = false;
+                closing = false;
+            }
+        });
+
+        loadMessages();
+
+        setInterval(loadMessages, 12000);
+
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) {
+                loadMessages();
+            }
+        });
+    </script>
+
+</body>
+</html>
